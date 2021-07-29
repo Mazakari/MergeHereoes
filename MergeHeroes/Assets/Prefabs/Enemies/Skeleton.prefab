@@ -116,5 +116,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monsterName: Skeleton
-  _monsterHp: 2
+  _monsterHp: 0.5
   _monsterGold: 1.5

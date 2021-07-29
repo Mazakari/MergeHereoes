@@ -17,7 +17,7 @@ public class Monster : MonoBehaviour
     /// <summary>
     /// Событие вызывается при смерти монстра
     /// </summary>
-    public event EventHandler OnMonsterDead;
+    public static event EventHandler OnMonsterDead;
     #endregion
 
     #region UNITY Methods
@@ -26,16 +26,17 @@ public class Monster : MonoBehaviour
     {
         _monsterHpBar = FindObjectOfType<Slider>();
         _monsterNameText = _monsterHpBar.transform.Find("MonsterNameText").GetComponent<Text>();
+
     }
     // Start is called before the first frame update
     void Start()
     {
+        _monsterHp *= MonstersManagerSO.MonsterHpMultiplyer;
         _monsterHpBar.maxValue = _monsterHp;
         _monsterHpBar.value = _monsterHpBar.maxValue;
 
         _monsterNameText.text = $"{_monsterName}";
-
-        _monsterHp *= MonstersManagerSO.MonsterHpMultiplyer;
+       
         _monsterGold *= MonstersManagerSO.MonsterGoldMultiplier;
     }
 
@@ -51,16 +52,22 @@ public class Monster : MonoBehaviour
         if (_monsterHp - damage > 0)
         {
             _monsterHp -= damage;
+            Debug.Log(_monsterHp);
             //Обновляем хп бар монстра
+            _monsterHpBar.value -= damage;
         }
         else
         {
-            // Монстр умер, отправляем событие
-            OnMonsterDead?.Invoke(this,EventArgs.Empty);
-
             // Начисляем игроку золото
             PlayerSettingsSO.CurrentGoldAmount += _monsterGold;
+
+            // Обновляем счетчик золота игрока
+            PlayerGoldCounter.UpdateGoldCounter();
+
+            // Монстр умер, отправляем событие
+            OnMonsterDead?.Invoke(this, EventArgs.Empty);
         }
     }
+    }
     #endregion
-}
+
