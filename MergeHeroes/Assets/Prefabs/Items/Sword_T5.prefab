@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 525823161985404081}
   - component: {fileID: 689119239295488828}
-  - component: {fileID: 1739540243359878045}
   - component: {fileID: 8665125366520542997}
   - component: {fileID: 322849328443827158}
   - component: {fileID: 8149567791086330423}
+  - component: {fileID: -8653912196413503045}
   m_Layer: 0
   m_Name: Sword_T5
   m_TagString: Untagged
@@ -86,27 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1739540243359878045
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937911796734399150}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &8665125366520542997
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,8 +127,8 @@ MonoBehaviour:
   _itemTier: 5
   _mergeItemType: 0
   _itemCost: 16
-  _damageMultiplyer: 0.5
-  _goldMultiplyer: 0.5
+  _damageMultiplyer: 3.5
+  _goldMultiplyer: 3.5
 --- !u!114 &8149567791086330423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +141,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4864162a0b78db645a7b402e102b32e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &-8653912196413503045
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937911796734399150}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

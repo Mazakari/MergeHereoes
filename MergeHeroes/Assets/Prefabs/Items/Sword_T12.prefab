@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5352512210424104698}
   - component: {fileID: 4943780665063463287}
-  - component: {fileID: 6138404904217297366}
   - component: {fileID: 3840265921050180958}
   - component: {fileID: 5292035083304905117}
   - component: {fileID: 2300426964251652103}
+  - component: {fileID: -6332730551530660140}
   m_Layer: 0
   m_Name: Sword_T12
   m_TagString: Untagged
@@ -86,27 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &6138404904217297366
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6336336650073905381}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &3840265921050180958
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,8 +127,8 @@ MonoBehaviour:
   _itemTier: 12
   _mergeItemType: 0
   _itemCost: 2048
-  _damageMultiplyer: 1.2
-  _goldMultiplyer: 1.2
+  _damageMultiplyer: 7
+  _goldMultiplyer: 7
 --- !u!114 &2300426964251652103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +141,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4864162a0b78db645a7b402e102b32e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &-6332730551530660140
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336336650073905381}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -24,7 +24,6 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public static Hero Hero { get { return _hero; } set { _hero = value; } }
 
-    private int _monsterCount = 0;
     #endregion
 
     #region UNITY Methods

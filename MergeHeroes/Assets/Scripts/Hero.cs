@@ -1,39 +1,70 @@
 // Roman Baranov 21.07.202
 
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
     #region VARIABLES
-    [SerializeField] private float _damage = 0.1f;// Базовый урон в секунду героя
+    [SerializeField] private float _damage = 0.1f;// Базовый урон героя
 
     /// <summary>
-    /// Базовый урон в секунду героя
+    /// Базовый урон героя
     /// </summary>
     public float Damage { get { return _damage; } }
+
+    [SerializeField] private float _goldPerKill = 0;// Золото, получаемое героем за убийство врага
+    ///// <summary>
+    ///// Золото, получаемое героем за убийство врага
+    ///// </summary>
+    //public float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
+
+    private int _currentItemTier = 1;// Текущий тир предмета одетого на герое
     #endregion
 
-    #region TO DO MERGING Section
-    [SerializeField] private int _heroTier = 0;// TO DO Текущий тир героя
-
-    [SerializeField] private HeroType _mergeHeroType;// TO DO Тип героя
+    #region PRIVATE Methods
     /// <summary>
-    /// TO DO Тип героя
+    /// Обновляем информацию по текущему одетому предмету на герое
     /// </summary>
-    public HeroType MergeHeroType { get { return _mergeHeroType; } }
-
-    /// <summary>
-    /// TO DO Список типов героев
-    /// </summary>
-    public enum HeroType
+    /// <param name="item">Новый предмет</param>
+    private void EquipItem(Item item)
     {
-        HeroMelee,
-        HeroRanged,
-        HeroMage,
+        // Обновляем текущий тир одетого предмета
+        _currentItemTier = item.ItemTier;
+
+        // Обновляем урон героя
+        _damage *= item.DamageMultiplyer;
+
+        // Обновляем золото за убийство с монстра
+        _goldPerKill *= item.GoldMultiplyer;
+        // Освобождаем слот предмета
+        item.OccupiedSlot = null;
+
+        // Уничтожаем предмет
+        Destroy(item.gameObject);
     }
 
-    private GameSettingsSO _gameSettingsSO = null;// TO DO Ссылка на SO с коллекцией героев для спавна
-   
+    // Обрабатываем экипировку предмета на героя
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Item>())
+        {
+            Item item = collision.GetComponent<Item>();
+           
+            if (TouchManager.IsMergable)
+            {
+                // Если тир перетягиваемого предмета на героя больше, то одеваем этот предмет
+                if (item.ItemTier > _currentItemTier)
+                {
+                    EquipItem(item);
+                    TouchManager.IsMergable = false;
+                }
+                else
+                {
+                    // Иначе возвращаем предмет в свой слот
+                    item.gameObject.transform.position = item.StartPos;
+                }
+            }
+        }
+    }
     #endregion
 }

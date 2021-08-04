@@ -48,7 +48,7 @@ public class Item : MonoBehaviour
     /// </summary>
     public Vector2 StartPos { get { return _startPos; } set { _startPos = value; } }
 
-    [SerializeField] private float _damageMultiplyer = 0f;// Множитель урона в секунду предмета
+    [SerializeField] private float _damageMultiplyer = 1.5f;// Множитель урона в секунду предмета
     /// <summary>
     /// Множитель урона в секунду предмета
     /// </summary>
@@ -57,7 +57,7 @@ public class Item : MonoBehaviour
     /// <summary>
     /// Множитель золота предмета
     /// </summary>
-    [SerializeField] private float _goldMultiplyer = 0f;// Множитель золота предмета
+    [SerializeField] private float _goldMultiplyer = 1.5f;// Множитель золота предмета
     public float GoldMultiplyer { get { return _goldMultiplyer; } }
     #endregion
 }

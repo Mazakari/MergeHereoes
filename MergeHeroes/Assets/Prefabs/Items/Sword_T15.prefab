@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6064944171658651239}
   - component: {fileID: 6554749265544116714}
-  - component: {fileID: 5423193034796589387}
   - component: {fileID: 3109645838468832707}
   - component: {fileID: 6277426577496344832}
   - component: {fileID: -4610697126939816397}
+  - component: {fileID: 849015665497136036}
   m_Layer: 0
   m_Name: Sword_T15
   m_TagString: Untagged
@@ -86,27 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &5423193034796589387
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297292492066961528}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &3109645838468832707
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,8 +127,8 @@ MonoBehaviour:
   _itemTier: 15
   _mergeItemType: 0
   _itemCost: 16384
-  _damageMultiplyer: 1.5
-  _goldMultiplyer: 1.5
+  _damageMultiplyer: 8.5
+  _goldMultiplyer: 8.5
 --- !u!114 &-4610697126939816397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,3 +141,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4864162a0b78db645a7b402e102b32e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &849015665497136036
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5297292492066961528}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

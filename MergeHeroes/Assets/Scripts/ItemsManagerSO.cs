@@ -25,5 +25,4 @@ public class ItemsManagerSO : ScriptableObject
     /// </summary>
     public static float ItemCostMultiplier { get { return _itemCostMultiplier; } }
     #endregion
-
 }

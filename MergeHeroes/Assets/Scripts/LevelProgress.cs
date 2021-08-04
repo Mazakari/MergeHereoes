@@ -2,13 +2,13 @@
 
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LevelProgress : MonoBehaviour
 {
     #region VARIABLES
-    private float _heroAttackDelay = 1.0f;
-    private IEnumerator _damageCoroutine = null;
+    private float _heroAttackDelay = 1.0f;// Задержка урона между атаки героя
+
+    private IEnumerator _damageCoroutine = null;// Курутина для постоянного нанесения урона монстру
     #endregion
 
     #region UNITY Methods
@@ -28,6 +28,10 @@ public class LevelProgress : MonoBehaviour
 
     #region PRIVATE Methods
 
+    /// <summary>
+    /// Курутина запускает постоянный урон по монстрам
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator DamageMonsters()
     {
         while (true)

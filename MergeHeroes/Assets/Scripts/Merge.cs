@@ -60,6 +60,15 @@ public class Merge : MonoBehaviour
                 Destroy(collision.gameObject);
                 Destroy(gameObject);
             }
+            else if (thisItem.ItemTier != itemToMergeWith.ItemTier &&
+                thisItem.MergeItemType == itemToMergeWith.MergeItemType &&
+                TouchManager.IsMergable)
+            {
+                Debug.Log("Incorrect Item Tier");
+                TouchManager.IsMergable = false;
+                gameObject.transform.position = itemToMergeWith.StartPos;
+                TouchManager.IsMergable = true;
+            }
         }
         else
         {

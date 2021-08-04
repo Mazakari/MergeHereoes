@@ -52,7 +52,7 @@ public class Monster : MonoBehaviour
         if (_monsterHp - damage > 0)
         {
             _monsterHp -= damage;
-            Debug.Log(_monsterHp);
+
             //Обновляем хп бар монстра
             _monsterHpBar.value -= damage;
         }
