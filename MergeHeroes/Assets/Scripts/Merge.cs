@@ -54,8 +54,14 @@ public class Merge : MonoBehaviour
                 // Спавним новый предмет на месте текущего
                 _itemContainerManager.SpawnItem(itemToMergeWith, slotToSpawn);
 
-                // Уменьшаем количество запавненных предметов на 1
-                ItemContainerManager.SpawnedItems--;
+                // Уменьшаем количество запавненных предметов на 2, т.к. при спауне нового при мерже добавится еще один.
+                ItemContainerManager.SpawnedItems -= 2;
+
+                // Если количество заспавненных предметов меньше, чем размер инвентаря, то меняем флаг InventoryFull на false
+                if (ItemContainerManager.SpawnedItems < MergePanelManager.InventorySize)
+                {
+                    ItemContainerManager.InventoryFull = false;
+                }
 
                 Destroy(collision.gameObject);
                 Destroy(gameObject);

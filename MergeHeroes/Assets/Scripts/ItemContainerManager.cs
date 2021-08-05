@@ -15,7 +15,11 @@ public class ItemContainerManager : MonoBehaviour
     /// </summary>
     public static int SpawnedItems { get { return _spawnedItems; } set { _spawnedItems = value; } }
 
-    //private MergeItem _mergeItem = null;// Ссылка на компонент объекта для сравнения тира и типа предмета
+    private static bool _inventoryFull = false;// Заполнен ли инвентарь
+    /// <summary>
+    /// Заполнен ли инвентарь
+    /// </summary>
+    public static bool InventoryFull { get { return _inventoryFull; } set { _inventoryFull = value; } }
     #endregion
 
     #region UNITY Methods
@@ -29,6 +33,7 @@ public class ItemContainerManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _inventoryFull = false;
         SpawnItem(2);
     }
 
@@ -42,6 +47,7 @@ public class ItemContainerManager : MonoBehaviour
     {
         if (itemsCount + _spawnedItems <= MergePanelManager.InventorySize)
         {
+           
             for (int i = 0; i < itemsCount; i++)
             {
                 GameObject slot = FindInventorySlotToSpawn();
@@ -55,7 +61,13 @@ public class ItemContainerManager : MonoBehaviour
                 item.GetComponent<Item>().OccupiedSlot = slot;
                 slot.GetComponent<InventorySlot>().ItemInSlot = item;
 
-                _spawnedItems++; ;
+                _spawnedItems++;
+
+                // Если количество предметов в инвентаре = количеству слотов
+                if (_spawnedItems == MergePanelManager.InventorySize)
+                {
+                    _inventoryFull = true;
+                }
             }
         }
         else
