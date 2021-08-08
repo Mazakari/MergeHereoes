@@ -47,10 +47,10 @@ public class BuyItem : MonoBehaviour
             ItemsManagerSO.CurrentItemBuyCost *= ItemsManagerSO.ItemCostMultiplier;
 
             // Обновить счетчик золота игрока
-            PlayerGoldCounter.UpdateGoldCounter();
+            PlayerGoldCounterUI.UpdateGoldCounter();
 
             // Обновить счетчик стоимости предмета
-            ItemCostCounter.UpdateUtemCost();
+            ItemCostCounterUI.UpdateUtemCost();
 
             //Заспавнить 1 предмет
             _itemContainerManager.SpawnItem(1);

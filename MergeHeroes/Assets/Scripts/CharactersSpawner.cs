@@ -6,6 +6,7 @@ public class CharactersSpawner : MonoBehaviour
 {
     #region VARIABLES
     private GameSettingsSO _gameSettingsSO = null;// Ссылка на SO для получения префабов героев и монстров
+    private HeroStatsUI _heroStatsUI = null;// Ссылка на скрипт с отображением статистики героя в UI для обновления значений
 
     private Vector2 _camWorldPos;// Левая нижняя точка камеры в мировых координатах
 
@@ -30,6 +31,7 @@ public class CharactersSpawner : MonoBehaviour
     private void Awake()
     {
         _gameSettingsSO = Resources.Load<GameSettingsSO>("ScriptableObjects/GameSettingsSO");
+        _heroStatsUI = FindObjectOfType<HeroStatsUI>();
     }
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,8 @@ public class CharactersSpawner : MonoBehaviour
 
         SpawnMonster();
         SpawnHero();
+
+        _heroStatsUI.UpdateHeroStats(_heroStatsUI.DefaultItemSprite, 0, _hero.Damage, _monster.MonsterGoldPerKill);
     }
 
     
@@ -59,6 +63,7 @@ public class CharactersSpawner : MonoBehaviour
 
         // Добавляем заспавленного героя в активные на сцене
         _hero = heroClone.GetComponent<Hero>();
+
     }
     #endregion
 

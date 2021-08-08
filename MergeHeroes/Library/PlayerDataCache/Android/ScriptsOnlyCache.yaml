@@ -5,17 +5,17 @@ ScriptsOnlyBuild:
     - CharactersSpawner
     - GameSettingsSO
     - Hero
+    - HeroStatsUI
     - InventorySlot
     - Item
     - ItemContainerManager
-    - ItemCostCounter
+    - ItemCostCounterUI
     - ItemsManagerSO
     - LevelProgress
     - Merge
     - MergePanelManager
     - Monster
-    - MonstersManagerSO
-    - PlayerGoldCounter
+    - PlayerGoldCounterUI
     - PlayerSettingsSO
     - TouchManager
     Unity.2D.Animation.Editor.dll:
@@ -38,8 +38,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -83,55 +85,55 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1506}
+      Script: {instanceID: 1508}
     - Class: 114
-      Script: {instanceID: 1700}
+      Script: {instanceID: 1702}
     - Class: 114
-      Script: {instanceID: 1748}
+      Script: {instanceID: 1750}
     - Class: 114
-      Script: {instanceID: 1810}
+      Script: {instanceID: 1812}
     - Class: 114
-      Script: {instanceID: 1892}
+      Script: {instanceID: 1894}
     - Class: 114
-      Script: {instanceID: 1904}
+      Script: {instanceID: 1906}
     - Class: 114
-      Script: {instanceID: 2204}
+      Script: {instanceID: 2206}
     - Class: 114
-      Script: {instanceID: 2544}
+      Script: {instanceID: 2546}
     - Class: 114
-      Script: {instanceID: 2620}
+      Script: {instanceID: 2622}
     - Class: 114
-      Script: {instanceID: 2780}
+      Script: {instanceID: 2782}
     - Class: 114
-      Script: {instanceID: 2996}
+      Script: {instanceID: 2998}
     - Class: 114
-      Script: {instanceID: 3208}
+      Script: {instanceID: 3210}
     - Class: 114
-      Script: {instanceID: 3240}
+      Script: {instanceID: 3242}
     - Class: 114
-      Script: {instanceID: 3352}
+      Script: {instanceID: 3354}
     - Class: 114
-      Script: {instanceID: 3508}
+      Script: {instanceID: 3510}
     - Class: 114
-      Script: {instanceID: 3726}
+      Script: {instanceID: 3832}
     - Class: 114
-      Script: {instanceID: 3830}
+      Script: {instanceID: 3856}
     - Class: 114
-      Script: {instanceID: 3854}
+      Script: {instanceID: 3920}
     - Class: 114
-      Script: {instanceID: 3918}
+      Script: {instanceID: 4152}
     - Class: 114
-      Script: {instanceID: 4150}
+      Script: {instanceID: 4484}
     - Class: 114
-      Script: {instanceID: 4482}
+      Script: {instanceID: 4724}
     - Class: 114
-      Script: {instanceID: 4722}
+      Script: {instanceID: 5108}
     - Class: 114
-      Script: {instanceID: 5106}
+      Script: {instanceID: 5236}
     - Class: 114
-      Script: {instanceID: 5234}
+      Script: {instanceID: 5414}
     - Class: 114
-      Script: {instanceID: 5412}
+      Script: {instanceID: 29838}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -306,7 +308,7 @@ ScriptsOnlyBuild:
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: PlayerGoldCounter
+    className: PlayerGoldCounterUI
   - hash:
       serializedVersion: 2
       Hash: a1aa98c78061c6f03a8c124cda576e67
@@ -477,12 +479,6 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: MonstersManagerSO
-  - hash:
-      serializedVersion: 2
       Hash: 3164bc883ff663a5cdb32d1ef7e7c0c5
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -582,7 +578,7 @@ ScriptsOnlyBuild:
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: ItemCostCounter
+    className: ItemCostCounterUI
   - hash:
       serializedVersion: 2
       Hash: a5781dc71a671b1ad2b38de19f24b71f
@@ -615,7 +611,7 @@ ScriptsOnlyBuild:
     className: SpriteShapeGeometryCache
   - hash:
       serializedVersion: 2
-      Hash: e363d5165dcc494f085d0d1702ac6fca
+      Hash: 3b81451eb3daf1cb0bb59ecbaf9bc966
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Hero
@@ -735,7 +731,7 @@ ScriptsOnlyBuild:
     className: BufferManager
   - hash:
       serializedVersion: 2
-      Hash: 1d596c9a89df5055719a05de04314389
+      Hash: 1a21958b87d3b8d1330739eaffd9d9ec
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Monster
@@ -769,7 +765,13 @@ ScriptsOnlyBuild:
     assemblyName: Unity.2D.IK.Runtime.dll
     namespaceName: UnityEngine.U2D.IK
     className: FabrikSolver2D
+  - hash:
+      serializedVersion: 2
+      Hash: c817959e861eb039c158c9a3e815ee40
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HeroStatsUI
   platform: 13
   scenePathNames:
   - Assets/Scenes/Level_1.unity
-  playerPath: D:/NOCSCAB/Hyper Casual/MergeHereoes/MergeHeroes/Builds/0.1.80421(p).apk
+  playerPath: D:/NOCSCAB/Hyper Casual/MergeHereoes/MergeHeroes/Builds/MergeHeroes_0.1.80821(p).apk

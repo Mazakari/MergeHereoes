@@ -12,14 +12,24 @@ public class Hero : MonoBehaviour
     /// </summary>
     public float Damage { get { return _damage; } }
 
-    [SerializeField] private float _goldPerKill = 0;// Золото, получаемое героем за убийство врага
-    ///// <summary>
-    ///// Золото, получаемое героем за убийство врага
-    ///// </summary>
-    //public float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
-
     private int _currentItemTier = 1;// Текущий тир предмета одетого на герое
+
+    private HeroStatsUI _heroStatsUI = null;
+
+    private float _curGoldMultiplyer = 0f;
     #endregion
+
+    private void Awake()
+    {
+        _heroStatsUI = FindObjectOfType<HeroStatsUI>();
+    }
+
+    private void Start()
+    {
+        Monster.OnMonsterDead += Monster_OnMonsterDead;
+    }
+
+   
 
     #region PRIVATE Methods
     /// <summary>
@@ -35,9 +45,16 @@ public class Hero : MonoBehaviour
         _damage *= item.DamageMultiplyer;
 
         // Обновляем золото за убийство с монстра
-        _goldPerKill *= item.GoldMultiplyer;
+        //_goldPerKill *= item.GoldMultiplyer;
+
         // Освобождаем слот предмета
         item.OccupiedSlot = null;
+
+        // Обновляем текущий множитель золота
+        _curGoldMultiplyer = item.GoldMultiplyer;
+
+        // Обновляем статы героя в UI
+        _heroStatsUI.UpdateHeroStats(item.gameObject.GetComponent<SpriteRenderer>().sprite, item.ItemTier, _damage, CharactersSpawner.Monster.MonsterGoldPerKill * _curGoldMultiplyer);
 
         // Уничтожаем предмет
         Destroy(item.gameObject);
@@ -67,4 +84,28 @@ public class Hero : MonoBehaviour
         }
     }
     #endregion
+
+    /// <summary>
+    /// Зачисляет золото за убийство монстра игроку
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Monster_OnMonsterDead(object sender, System.EventArgs e)
+    {
+        if (_curGoldMultiplyer > 0)
+        {
+            // Начисляем игроку золото с множителем от предмета
+            PlayerSettingsSO.CurrentGoldAmount += CharactersSpawner.Monster.MonsterGoldPerKill * _curGoldMultiplyer;
+        }
+        else
+        {
+            // Начисляем игроку золото с множителем от предмета
+            PlayerSettingsSO.CurrentGoldAmount += CharactersSpawner.Monster.MonsterGoldPerKill;
+        }
+
+        // Обновляем счетчик золота игрока
+        PlayerGoldCounterUI.UpdateGoldCounter();
+    }
 }
+
+    

@@ -9,7 +9,8 @@ public class Monster : MonoBehaviour
     #region VARIABLES
     [SerializeField] private string _monsterName = "SetMonsterName";
     [SerializeField] private float _monsterHp = 2f;// Базовое значение жизней у монстра
-    [SerializeField] private float _monsterGold = 1f;// Базовое значение золота за убийство монстра
+    [SerializeField] private float _monsterGoldPerKill = 1f;// Базовое значение золота за убийство монстра
+    public float MonsterGoldPerKill { get { return _monsterGoldPerKill; } set { _monsterGoldPerKill = value; } }
 
     private Slider _monsterHpBar = null;// Ссылка на HP бар монстра на сцене
     private Text _monsterNameText = null;// Ссылка на компонент с текстом для отображения имени монстра
@@ -31,13 +32,10 @@ public class Monster : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _monsterHp *= MonstersManagerSO.MonsterHpMultiplyer;
         _monsterHpBar.maxValue = _monsterHp;
         _monsterHpBar.value = _monsterHpBar.maxValue;
 
         _monsterNameText.text = $"{_monsterName}";
-       
-        _monsterGold *= MonstersManagerSO.MonsterGoldMultiplier;
     }
 
     #endregion
@@ -58,16 +56,10 @@ public class Monster : MonoBehaviour
         }
         else
         {
-            // Начисляем игроку золото
-            PlayerSettingsSO.CurrentGoldAmount += _monsterGold;
-
-            // Обновляем счетчик золота игрока
-            PlayerGoldCounter.UpdateGoldCounter();
-
             // Монстр умер, отправляем событие
             OnMonsterDead?.Invoke(this, EventArgs.Empty);
         }
     }
-    }
+}
     #endregion
 
