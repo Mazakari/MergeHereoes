@@ -9,6 +9,12 @@ public class LevelProgress : MonoBehaviour
     private float _heroAttackDelay = 1.0f;// Задержка урона между атаки героя
 
     private IEnumerator _damageCoroutine = null;// Курутина для постоянного нанесения урона монстру
+
+    private static float _currentGoldAmount = 10;
+    /// <summary>
+    /// Текущее количество золота у игрока
+    /// </summary>
+    public static float CurrentGoldAmount { get { return _currentGoldAmount; } set { _currentGoldAmount = value; } }
     #endregion
 
     #region UNITY Methods
@@ -46,7 +52,4 @@ public class LevelProgress : MonoBehaviour
         yield return null;
     }
     #endregion
-
-
-
 }

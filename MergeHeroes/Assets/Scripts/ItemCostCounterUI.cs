@@ -41,7 +41,7 @@ public class ItemCostCounterUI : MonoBehaviour
     {
         for (int i = 0; i < _gameSettingsSO.Items.Length; i++)
         {
-            if (_gameSettingsSO.Items[i].GetComponent<Item>().ItemTier == ItemsManagerSO.CurrentTierToBuy)
+            if (_gameSettingsSO.Items[i].GetComponent<Item>().ItemTier == GameSettingsSO.CurrentTierToBuy)
             {
                 return _gameSettingsSO.Items[i].GetComponent<SpriteRenderer>().sprite;
             }
@@ -56,6 +56,6 @@ public class ItemCostCounterUI : MonoBehaviour
     /// </summary>
     public static void UpdateUtemCost()
     {
-        _itemCostText.text = $"{ItemsManagerSO.CurrentItemBuyCost.ToString("F2")}";
+        _itemCostText.text = $"{GameSettingsSO.CurrentItemBuyCost.ToString("F2")}";
     }
 }

@@ -45,12 +45,16 @@ public class ItemContainerManager : MonoBehaviour
     /// </summary>
     public void SpawnItem(int itemsCount)
     {
+        // DEBUG
+        //_mergePanelManager.PrintInventory();
+
         if (itemsCount + _spawnedItems <= MergePanelManager.InventorySize)
         {
            
             for (int i = 0; i < itemsCount; i++)
             {
                 GameObject slot = FindInventorySlotToSpawn();
+                Debug.Log($"FindInventorySlot = {slot}");
                 GameObject item = Instantiate(_gameSettingsSO.Items[0], transform.position, Quaternion.identity, transform);
 
                 Item mt = item.GetComponent<Item>();
@@ -74,7 +78,11 @@ public class ItemContainerManager : MonoBehaviour
         {
             Debug.Log($"Incorrect items value {itemsCount}. Inventory max size is {MergePanelManager.InventorySize}");
         }
-        
+
+        _mergePanelManager.MarkUnusedSlots();
+        // DEBUG
+        //_mergePanelManager.PrintInventory();
+
     }
 
     /// <summary>

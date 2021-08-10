@@ -37,14 +37,14 @@ public class BuyItem : MonoBehaviour
     /// </summary>
     private void BuyNewItem()
     {
-        // Проверить стоимость предмета и золото игрока
-        if (ItemsManagerSO.CurrentItemBuyCost <= PlayerSettingsSO.CurrentGoldAmount && !ItemContainerManager.InventoryFull)
+        // Проверить стоимость предмета, наличие золота у игрока и заполненность инвентаря
+        if (GameSettingsSO.CurrentItemBuyCost <= LevelProgress.CurrentGoldAmount && !ItemContainerManager.InventoryFull)
         {
             // Вычесть стоимость предмета из стоимости игрока
-            PlayerSettingsSO.CurrentGoldAmount -= ItemsManagerSO.CurrentItemBuyCost;
+            LevelProgress.CurrentGoldAmount -= GameSettingsSO.CurrentItemBuyCost;
 
             // Увеличить стоимость предмета на множитель
-            ItemsManagerSO.CurrentItemBuyCost *= ItemsManagerSO.ItemCostMultiplier;
+            GameSettingsSO.CurrentItemBuyCost *= GameSettingsSO.ItemCostMultiplier;
 
             // Обновить счетчик золота игрока
             PlayerGoldCounterUI.UpdateGoldCounter();
@@ -57,8 +57,8 @@ public class BuyItem : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Not enough gold! Item cost is {ItemsManagerSO.CurrentItemBuyCost}, player have {PlayerSettingsSO.CurrentGoldAmount} gold.");
-            Debug.Log($"Inventory is Full {ItemContainerManager.SpawnedItems} / {MergePanelManager.InventorySize}");
+            //Debug.Log($"Not enough gold! Item cost is {GameSettingsSO.CurrentItemBuyCost}, player have {LevelProgress.CurrentGoldAmount} gold.");
+            //Debug.Log($"Inventory is Full {ItemContainerManager.SpawnedItems} / {MergePanelManager.InventorySize}");
         }
         
     }

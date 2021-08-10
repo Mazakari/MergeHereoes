@@ -27,6 +27,7 @@ public class MergePanelManager : MonoBehaviour
     {
         _inventoryCellPrefab = Resources.Load<GameObject>("Prefabs/InventorySlot");
         InitInventory();
+        MarkUnusedSlots();
     }
     #endregion
 
@@ -52,6 +53,9 @@ public class MergePanelManager : MonoBehaviour
                 item2.OccupiedSlot = null;
             }
         }
+
+        MarkUnusedSlots();
+
     }
 
     /// <summary>
@@ -62,6 +66,26 @@ public class MergePanelManager : MonoBehaviour
         for (int i = 0; i < _inventorySlotList.Count; i++)
         {
             Debug.Log($"slot: {_inventorySlotList[i].name} with item: {_inventorySlotList[i].GetComponent<InventorySlot>().ItemInSlot}");
+        }
+    }
+
+    /// <summary>
+    /// DEBUG Отмечает пустые слоты красным, а свободные зеленым
+    /// </summary>
+    public void MarkUnusedSlots()
+    {
+        for (int i = 0; i < _inventorySlotList.Count; i++)
+        {
+            if (_inventorySlotList[i].GetComponent<InventorySlot>().ItemInSlot == null)
+            {
+                _inventorySlotList[i].GetComponent<SpriteRenderer>().color = Color.green;
+                
+            }
+
+            else
+            {
+                _inventorySlotList[i].GetComponent<SpriteRenderer>().color = Color.red;
+            }
         }
     }
     #endregion
@@ -102,6 +126,8 @@ public class MergePanelManager : MonoBehaviour
             }
         }
     }
+
+    
     #endregion
 
 

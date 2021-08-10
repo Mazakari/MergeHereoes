@@ -23,7 +23,9 @@ public class HeroStatsUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CharactersSpawner.OnMonsterSpawn += CharactersSpawner_OnMonsterSpawn;
     }
+
 
     #endregion
 
@@ -42,6 +44,29 @@ public class HeroStatsUI : MonoBehaviour
 
         _heroDamageText.text = $"Damage: {heroDamage.ToString("F2")}";
         _goldPerKillText.text = $"Gold per kill: {goldPerKill.ToString("F2")}";
+    }
+    #endregion
+
+
+    #region PRIVATE Methods
+    /// <summary>
+    /// Обновляет счетчик золота за убийство монстра
+    /// </summary>
+    private void UpdateGoldPerKill()
+    {
+        _goldPerKillText.text = $"Gold per kill: {CharactersSpawner.Monster.MonsterGoldPerKill:F2}";
+    }
+    #endregion
+
+    #region EVENTS
+    /// <summary>
+    /// Обновляет счетчик золота за убийство монстра при спавне нового монстра
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CharactersSpawner_OnMonsterSpawn(object sender, System.EventArgs e)
+    {
+        UpdateGoldPerKill();
     }
     #endregion
 }

@@ -29,7 +29,7 @@ public class PlayerGoldCounterUI : MonoBehaviour
     /// </summary>
     public static void UpdateGoldCounter()
     {
-        _counterText.text = $"{PlayerSettingsSO.CurrentGoldAmount.ToString("F2")}";
+        _counterText.text = $"{LevelProgress.CurrentGoldAmount:F2}";
     }
     #endregion
 

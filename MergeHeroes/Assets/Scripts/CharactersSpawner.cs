@@ -1,5 +1,6 @@
 // Roman Baranov 28.07.2021 
 
+using System;
 using UnityEngine;
 
 public class CharactersSpawner : MonoBehaviour
@@ -25,6 +26,10 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public static Hero Hero { get { return _hero; } set { _hero = value; } }
 
+    /// <summary>
+    /// Событие вызывается в момент спавна монстра
+    /// </summary>
+    public static event EventHandler OnMonsterSpawn;
     #endregion
 
     #region UNITY Methods
@@ -56,7 +61,7 @@ public class CharactersSpawner : MonoBehaviour
     private void SpawnHero()
     {
         Vector2 spawnPos = new Vector2(_camWorldPos.x / 2, 0);
-        int rndIndex = Random.Range(0, _gameSettingsSO.Heroes.Length);
+        int rndIndex = UnityEngine.Random.Range(0, _gameSettingsSO.Heroes.Length);
         GameObject hero = _gameSettingsSO.Heroes[rndIndex];
 
         GameObject heroClone = Instantiate(hero, spawnPos, Quaternion.identity, _heroesParent);
@@ -74,22 +79,31 @@ public class CharactersSpawner : MonoBehaviour
     public void SpawnMonster()
     {
         Vector2 spawnPos = new Vector2(-_camWorldPos.x / 2, 0);
-        int rndIndex = Random.Range(0, _gameSettingsSO.Monsters.Length);
+        int rndIndex = UnityEngine.Random.Range(0, _gameSettingsSO.Monsters.Length);
         GameObject monster = _gameSettingsSO.Monsters[rndIndex];
 
         GameObject monsterClone = Instantiate(monster, spawnPos, Quaternion.identity, _monstersParent);
 
         // Добавляем заспавленного монстра в активные на сцене
         _monster = monsterClone.GetComponent<Monster>();
+
+        // Отправляем событие о спавне монстра
+        OnMonsterSpawn?.Invoke(this, EventArgs.Empty);
     }
     #endregion
 
     #region EVENTS
-    private void Monster_OnMonsterDead(object sender, System.EventArgs e)
+    private void Monster_OnMonsterDead(object sender, EventArgs e)
     {
-        // Убираем текущего монстра
+        // Начисляем игроку золото
+        LevelProgress.CurrentGoldAmount += _monster.MonsterGoldPerKill;
+
+        // Обновляем счетчик золота игрока
+        PlayerGoldCounterUI.UpdateGoldCounter();
+
+        // Уничтожаем монстра
         Destroy(_monster.gameObject);
-        
+
         // Спавним нового монстра
         SpawnMonster();
     }

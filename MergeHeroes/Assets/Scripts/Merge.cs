@@ -48,8 +48,8 @@ public class Merge : MonoBehaviour
                 //Сохраняем слот для спавна объекта
                 GameObject slotToSpawn = thisItem.OccupiedSlot;
 
-                Debug.Log("Before");
-                _mergePanelManager.PrintInventory();
+                //Debug.Log("Before");
+                //_mergePanelManager.PrintInventory();
 
                 // Очищаем слоты для двух предметов
                 _mergePanelManager.ClearSelectedSlots(itemToMergeWith, thisItem);
@@ -57,8 +57,8 @@ public class Merge : MonoBehaviour
                 // Спавним новый предмет на месте текущего
                 _itemContainerManager.SpawnItem(itemToMergeWith, slotToSpawn);
 
-                Debug.Log("After");
-                _mergePanelManager.PrintInventory();
+                //Debug.Log("After");
+                //_mergePanelManager.PrintInventory();
 
                 // Уменьшаем количество запавненных предметов на 2, т.к. при спауне нового при мерже добавится еще один.
                 ItemContainerManager.SpawnedItems -= 2;
