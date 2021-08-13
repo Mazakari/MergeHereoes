@@ -116,5 +116,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monsterName: Slime T5
-  _monsterHp: 2.5
+  _monsterHp: 30
   _monsterGoldPerKill: 3

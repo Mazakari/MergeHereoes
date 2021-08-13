@@ -116,5 +116,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monsterName: Skeleton T3
-  _monsterHp: 1.5
+  _monsterHp: 20
   _monsterGoldPerKill: 2
