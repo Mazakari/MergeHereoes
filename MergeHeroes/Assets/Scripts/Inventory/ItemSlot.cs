@@ -47,11 +47,19 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 // Проверяем есть ли в текущей ячейке предмет
                 if (thisItem)
                 {
-                    // Проверяем, совпадают ли типы и тиры предметов
-                    if (thisItem.CurItemType == itemBeingDragged.CurItemType && thisItem.ItemTier == itemBeingDragged.ItemTier)
+                    // Проверяем не один ли и тот же это предмет
+                    if (thisItem.ParentSlotId != itemBeingDragged.ParentSlotId)
                     {
-                        // Если да, то мержим их
-                        Merge(itemBeingDragged, thisItem);
+                        // Проверяем, совпадают ли типы и тиры предметов
+                        if (thisItem.CurItemType == itemBeingDragged.CurItemType && thisItem.ItemTier == itemBeingDragged.ItemTier)
+                        {
+                            // Если да, то мержим их
+                            Merge(itemBeingDragged, thisItem);
+                        }
+                        else
+                        {
+                            ResetItemPosition(itemBeingDragged);
+                        }
                     }
                     else
                     {
@@ -75,6 +83,9 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     /// <param name="Item">Предмет для расположения в ячейке</param>
     private void PutItemInSlot(Item item)
     {
+        // Переключаем флаг IsDragging предмета в false
+        item.GetComponent<DragDrop>().IsDragging = false;
+
         // Освобождаем предыдущую ячейку предмета (isOccupied = false)
         FindItemParentSlot(item).IsOccupied = false;
 
