@@ -25,8 +25,6 @@ public class HeroStatsUI : MonoBehaviour
     {
         CharactersSpawner.OnMonsterSpawn += CharactersSpawner_OnMonsterSpawn;
     }
-
-
     #endregion
 
     #region PUBLIC Methods
@@ -35,14 +33,14 @@ public class HeroStatsUI : MonoBehaviour
     /// </summary>
     /// <param name="itemSprite">Спрайт нового предмета</param>
     /// <param name="itemTier">Тир нового предмета</param>
-    /// <param name="heroDamage">Новый урон героя</param>
+    /// <param name="itemDamage">Новый урон героя</param>
     /// <param name="heroGoldPerKill">Новый доход героя за убийство монстра</param>
-    public void UpdateHeroStats(Sprite itemSprite, int itemTier, float heroDamage, float goldPerKill)
+    public void UpdateHeroStats(Sprite itemSprite, int itemTier, float itemDamage, float goldPerKill)
     {
         _heroItemImage.sprite = itemSprite;
         _heroItemTierText.text = $"Tier {itemTier}";
 
-        _heroDamageText.text = $"Damage: {heroDamage.ToString("F2")}";
+        _heroDamageText.text = $"Damage: {itemDamage.ToString("F2")}";
         _goldPerKillText.text = $"Gold per kill: {goldPerKill.ToString("F2")}";
     }
     #endregion

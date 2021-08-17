@@ -55,12 +55,12 @@ public class ItemsSpawner : MonoBehaviour
     }
     #endregion
 
-    #region PRIVATE Methods
+    #region PUBLIC Methods
     /// <summary>
     /// Находит первый свободный слот инвентаря и возвращает его. Если свободных слотов нет, то возвращает null
     /// </summary>
     /// <returns></returns>
-    private ItemSlot FindEmptySlot()
+    public static ItemSlot FindEmptySlot()
     {
         for (int i = 0; i < Inventory.Slots.Count; i++)
         {

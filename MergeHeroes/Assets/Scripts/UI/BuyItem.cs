@@ -9,6 +9,7 @@ public class BuyItem : MonoBehaviour
     private Button _buyItemButton = null;
 
     private ItemsSpawner _itemsSpawner = null;
+
     #endregion
 
     #region UNITY Methods
@@ -22,6 +23,12 @@ public class BuyItem : MonoBehaviour
     void Start()
     {
         _buyItemButton.onClick.AddListener(BuyNewItem);
+
+        // Обновляем текущую стоимость предмета в LevelProgress
+        LevelProgress.CurrentItemBuyCost = GetItemByTier(LevelProgress.CurrentTierToBuy).ItemCost;
+
+        // Обновить счетчик стоимости предмета
+        ItemCostCounterUI.UpdateUtemCost();
     }
 
     private void OnDestroy()
@@ -37,16 +44,53 @@ public class BuyItem : MonoBehaviour
     private void BuyNewItem()
     {
         // Проверить достаточно ли у игрока золота для покупки
+        if (LevelProgress.CurrentGoldAmount >= LevelProgress.CurrentItemBuyCost)
+        {
+            // Проверить есть ли свободные слоты в инвентаре
+            if (ItemsSpawner.FindEmptySlot())
+            {
+                // Вычесть деньги за предмет у игрока
+                LevelProgress.CurrentGoldAmount -= LevelProgress.CurrentItemBuyCost;
 
-        // Проверить есть ли свободные слоты в инвентаре
+                // Умножить цену покупки на множитель предмета из LevelProgress
+                LevelProgress.CurrentItemBuyCost *= LevelProgress.ItemCostMultiplier;
 
-        // Вычесть деньги за предмет у игрока
+                // Обновить счетчик стоимости предмета
+                ItemCostCounterUI.UpdateUtemCost();
 
-        // Заспавнить предмет в первой свободной ячейке
-        _itemsSpawner.SpawnItem(1);
-        // Обновить счетчик золота у игрока
-        
+                // Заспавнить предмет в первой свободной ячейке
+                _itemsSpawner.SpawnItem(1);
+
+                // Обновить счетчик золота у игрока
+                PlayerGoldCounterUI.UpdateGoldCounter();
+            }
+            else
+            {
+                Debug.Log("No empty slots avaiable");
+            }
+        }
+        else
+        {
+            Debug.Log("Not enough money");
+        }
     }
 
+    /// <summary>
+    /// Находит предмет по заданному тиру и возвращает его. Иначе возвращает null
+    /// </summary>
+    /// <param name="itemTier">Тир для поиска предмета</param>
+    /// <returns>Item</returns>
+    private Item GetItemByTier(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Items.Length; i++)
+        {
+            if (ItemsSpawner.gameSettingsSO.Items[i].GetComponent<Item>().ItemTier == itemTier)
+            {
+                return ItemsSpawner.gameSettingsSO.Items[i].GetComponent<Item>();
+            }
+        }
+
+        return null;
+    }
     #endregion
 }

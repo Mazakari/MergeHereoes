@@ -26,6 +26,8 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public static Hero Hero { get { return _hero; } set { _hero = value; } }
 
+    private int _monsterIndexToSpawn = 0;// Индекс монстра в массиве монстров для спавна
+
     /// <summary>
     /// Событие вызывается в момент спавна монстра
     /// </summary>
@@ -78,14 +80,27 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public void SpawnMonster()
     {
+        // Выбираем позицию монстра для спавна
         Vector2 spawnPos = new Vector2(-_camWorldPos.x / 2, 0);
-        int rndIndex = UnityEngine.Random.Range(0, _gameSettingsSO.Monsters.Length);
-        GameObject monster = _gameSettingsSO.Monsters[rndIndex];
 
+        // Выбираем монстра для спавна
+        GameObject monster = _gameSettingsSO.Monsters[_monsterIndexToSpawn];
+
+        // Спавним монстра
         GameObject monsterClone = Instantiate(monster, spawnPos, Quaternion.identity, _monstersParent);
+
+        // Проверяем можно ли инкрементировать индекс монстра
+        if (_monsterIndexToSpawn + 1 < _gameSettingsSO.Monsters.Length)
+        {
+            // Инкрементируем индекс монстра для следующего спавна
+            _monsterIndexToSpawn++;
+        }
 
         // Добавляем заспавленного монстра в активные на сцене
         _monster = monsterClone.GetComponent<Monster>();
+
+        // Обновляем показатель GoldPerKill в LevelProgress
+        LevelProgress.GoldPerKill = _monster.MonsterGoldPerKill;
 
         // Отправляем событие о спавне монстра
         OnMonsterSpawn?.Invoke(this, EventArgs.Empty);

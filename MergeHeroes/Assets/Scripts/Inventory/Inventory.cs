@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         SetInventorySlots();
-        _itemsSpawner.SpawnItem(8);
+        _itemsSpawner.SpawnItem(2);
     }
     #endregion
 

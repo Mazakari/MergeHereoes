@@ -160,28 +160,42 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     /// <param name="currentItemTier">Текущий тир предмета</param>
     private void SpawnNextTierItem(int currentItemTier)
     {
-        // Ищем предмет на 1 тир выше текущего
         for (int i = 0; i < ItemsSpawner.gameSettingsSO.Items.Length; i++)
         {
-            // Если такой предмет найден, то спавним его
+            // Ищем предмет на 1 тир выше текущего
             if (ItemsSpawner.gameSettingsSO.Items[i].GetComponent<Item>().ItemTier == currentItemTier + 1)
             {
                 // Спавним предмет в этой ячейке
-                Item item = Instantiate(ItemsSpawner.gameSettingsSO.Items[i], transform).GetComponent<Item>();
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Items[i], transform).GetComponent<Item>();
 
                 // Делаем предмет ребенком ячейки
-                item.transform.SetParent(transform, true);
-                item.transform.position = transform.position;
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
 
                 // Записываем ID родительской ячейки для предмета
-                item.ParentSlotId = _itemSlotID;
+                nextTieriIem.ParentSlotId = _itemSlotID;
 
                 // Отмечаем ячейку как занятую
                 _isOccupied = true;
 
                 return;
             }
+           
         }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Items[currentItemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
 
         Debug.Log($"T{currentItemTier + 1} item not exist!");
     }

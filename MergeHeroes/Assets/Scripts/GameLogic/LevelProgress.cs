@@ -16,6 +16,12 @@ public class LevelProgress : MonoBehaviour
     /// </summary>
     public static float CurrentGoldAmount { get { return _currentGoldAmount; } set { _currentGoldAmount = value; } }
 
+    private static float _goldPerKill = 1;
+    /// <summary>
+    /// Текущее количество золота, начисляемого за убийство монстра
+    /// </summary>
+    public static float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
+
     // Текущий тир предмета для спавна
     private static int _currentTierToBuy = 1;
     /// <summary>
@@ -29,7 +35,7 @@ public class LevelProgress : MonoBehaviour
     /// </summary>
     public static float CurrentItemBuyCost { get { return _currentItemBuyCost; } set { _currentItemBuyCost = value; } }
 
-    private static float _itemCostMultiplier = 1.2f;
+    private static float _itemCostMultiplier = 1.1f;
     /// <summary>
     /// Множитель роста стоимости предмета
     /// </summary>
