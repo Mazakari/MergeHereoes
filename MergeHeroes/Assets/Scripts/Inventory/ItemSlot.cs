@@ -51,7 +51,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                     if (thisItem.ParentSlotId != itemBeingDragged.ParentSlotId)
                     {
                         // Проверяем, совпадают ли типы и тиры предметов
-                        if (thisItem.CurItemType == itemBeingDragged.CurItemType && thisItem.ItemTier == itemBeingDragged.ItemTier)
+                        if (thisItem.Type == itemBeingDragged.Type && thisItem.Tier == itemBeingDragged.Tier)
                         {
                             // Если да, то мержим их
                             Merge(itemBeingDragged, thisItem);
@@ -158,7 +158,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         _isOccupied = false;
 
         // Спавним предмет тиром выше в ячейке предмета, на который перетащили и делаем эту ячейку родителем предмета тиром выше
-        SpawnNextTierItem(thisItemSlotItem.ItemTier);
+        SpawnNextTierItem(thisItemSlotItem.Tier, thisItemSlotItem.Type);
 
         // Удаляем оба предмета
         Destroy(itemBeingDragged.gameObject);
@@ -169,15 +169,41 @@ public class ItemSlot : MonoBehaviour, IDropHandler
     /// Находит предмет на 1 тир выше указанного и спавнит предмет тиром выше в этой ячейке
     /// </summary>
     /// <param name="currentItemTier">Текущий тир предмета</param>
-    private void SpawnNextTierItem(int currentItemTier)
+    private void SpawnNextTierItem(int currentItemTier, ItemTypes.Items itemType)
     {
-        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Items.Length; i++)
+        switch (itemType)
+        {
+            case ItemTypes.Items.Sword:
+                SpawnSword(currentItemTier);
+                break;
+
+            case ItemTypes.Items.Armour:
+                SpawnArmour(currentItemTier);
+                break;
+
+            case ItemTypes.Items.Potion:
+                SpawnPotion(currentItemTier);
+                break;
+
+            default:
+                Debug.Log("No Such Item Type Found!");
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа меч
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnSword(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Swords.Length; i++)
         {
             // Ищем предмет на 1 тир выше текущего
-            if (ItemsSpawner.gameSettingsSO.Items[i].GetComponent<Item>().ItemTier == currentItemTier + 1)
+            if (ItemsSpawner.gameSettingsSO.Swords[i].GetComponent<Item>().Tier == itemTier + 1)
             {
                 // Спавним предмет в этой ячейке
-                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Items[i], transform).GetComponent<Item>();
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Swords[i], transform).GetComponent<Item>();
 
                 // Делаем предмет ребенком ячейки
                 nextTieriIem.transform.SetParent(transform, true);
@@ -191,12 +217,12 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 
                 return;
             }
-           
+
         }
 
         // Если такой предмет не был найден, то спавним предмет последнего существующего тира
         // Спавним предмет в этой ячейке
-        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Items[currentItemTier], transform).GetComponent<Item>();
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Swords[itemTier], transform).GetComponent<Item>();
 
         // Делаем предмет ребенком ячейки
         item.transform.SetParent(transform, true);
@@ -208,7 +234,99 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         // Отмечаем ячейку как занятую
         _isOccupied = true;
 
-        Debug.Log($"T{currentItemTier + 1} item not exist!");
+        Debug.Log($"T{itemTier + 1} item not exist!");
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа броня
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnArmour(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Armour.Length; i++)
+        {
+            // Ищем предмет на 1 тир выше текущего
+            if (ItemsSpawner.gameSettingsSO.Armour[i].GetComponent<Item>().Tier == itemTier + 1)
+            {
+                // Спавним предмет в этой ячейке
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Armour[i], transform).GetComponent<Item>();
+
+                // Делаем предмет ребенком ячейки
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
+
+                // Записываем ID родительской ячейки для предмета
+                nextTieriIem.ParentSlotId = _itemSlotID;
+
+                // Отмечаем ячейку как занятую
+                _isOccupied = true;
+
+                return;
+            }
+
+        }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Armour[itemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
+
+        Debug.Log($"T{itemTier + 1} item not exist!");
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа зелье
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnPotion(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Potions.Length; i++)
+        {
+            // Ищем предмет на 1 тир выше текущего
+            if (ItemsSpawner.gameSettingsSO.Potions[i].GetComponent<Item>().Tier == itemTier + 1)
+            {
+                // Спавним предмет в этой ячейке
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Potions[i], transform).GetComponent<Item>();
+
+                // Делаем предмет ребенком ячейки
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
+
+                // Записываем ID родительской ячейки для предмета
+                nextTieriIem.ParentSlotId = _itemSlotID;
+
+                // Отмечаем ячейку как занятую
+                _isOccupied = true;
+
+                return;
+            }
+
+        }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Potions[itemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
+
+        Debug.Log($"T{itemTier + 1} item not exist!");
     }
     #endregion
 }

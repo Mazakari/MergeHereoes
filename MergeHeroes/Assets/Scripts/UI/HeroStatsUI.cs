@@ -6,16 +6,9 @@ using UnityEngine.UI;
 public class HeroStatsUI : MonoBehaviour
 {
     #region VARIABLES
-    [Header("Hero Item Section")]
-    [SerializeField] private Sprite _defaultItemTier = null;// Спрайт для предмета по умолчаню
-    public Sprite DefaultItemSprite { get { return _defaultItemTier; } }
-
-    [SerializeField] private Image _heroItemImage = null;// Изображение текущего снаряженного предмета на герое
-    [SerializeField] private Text _heroItemTierText = null;// Описание текущего снаряженного предмета на герое
-
-    [Space(3)]
     [Header("Hero Stats Section")]
     [SerializeField] private Text _heroDamageText = null;// Текущий урон героя
+    [SerializeField] private Text _heroArmourText = null;// Текущий показатель брони героя
     [SerializeField] private Text _goldPerKillText = null;// Текущий доход героя за убийство монстра
     #endregion
 
@@ -31,22 +24,35 @@ public class HeroStatsUI : MonoBehaviour
     /// <summary>
     /// Обновляет отображаемую статистику героя в интерфейсе
     /// </summary>
-    /// <param name="itemSprite">Спрайт нового предмета</param>
-    /// <param name="itemTier">Тир нового предмета</param>
     /// <param name="itemDamage">Новый урон героя</param>
-    /// <param name="heroGoldPerKill">Новый доход героя за убийство монстра</param>
-    public void UpdateHeroStats(Sprite itemSprite, int itemTier, float itemDamage, float goldPerKill)
+    public void UpdateHeroDamage(float itemDamage)
     {
-        _heroItemImage.sprite = itemSprite;
-        _heroItemTierText.text = $"Tier {itemTier}";
+        _heroDamageText.text = $"Damage: {itemDamage:F2}";
+       
+    }
 
-        _heroDamageText.text = $"Damage: {itemDamage.ToString("F2")}";
-        _goldPerKillText.text = $"Gold per kill: {goldPerKill.ToString("F2")}";
+    /// <summary>
+    /// Обновляет показатель брони героя
+    /// </summary>
+    /// <param name="itemArmour">Новый показатель брони героя</param>
+    public void UpdateHeroArmour(float itemArmour)
+    {
+        _heroArmourText.text = $"Armour: {itemArmour:F2}";
+    }
+
+    /// <summary>
+    /// Обновляет значение золота за убийство монстра
+    /// </summary>
+    /// <param name="goldPerKill">Новый доход героя за убийство монстра</param>
+    public void UpdateGoldPerKill(float goldPerKill)
+    {
+        _goldPerKillText.text = $"Gold per kill: {goldPerKill:F2}";
     }
     #endregion
 
 
     #region PRIVATE Methods
+
     /// <summary>
     /// Обновляет счетчик золота за убийство монстра
     /// </summary>

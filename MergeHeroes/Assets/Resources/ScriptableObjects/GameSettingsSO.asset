@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082e69173da837a48a77369aba751d5c, type: 3}
   m_Name: GameSettingsSO
   m_EditorClassIdentifier: 
-  _items:
-  - {fileID: 3366402232424256648, guid: 4a5260f4b7829cc43b603a363cd07f5a, type: 3}
+  _swords:
   - {fileID: 6664475991426073483, guid: ba91b16acc8786441974ef237fd1e878, type: 3}
   - {fileID: 4053950797763063465, guid: 9b46a01f469b6f74ea00b713ce2048ea, type: 3}
   - {fileID: 1772843976682342478, guid: 8475648217064a34bb095fbf6f4136fb, type: 3}
@@ -29,6 +28,16 @@ MonoBehaviour:
   - {fileID: 2573121599166017535, guid: be41b22dde080aa47ba03eae3a927f67, type: 3}
   - {fileID: 2607450577565336028, guid: 6e2b010ae8d91874fbaedfc5e828ca45, type: 3}
   - {fileID: 6345234654411733816, guid: ec13d99327c5f7d4ab4d7df155c50af1, type: 3}
+  _armour:
+  - {fileID: 7581773719297819617, guid: b8ac8bf8217923841a665e7298121c8a, type: 3}
+  - {fileID: 6791443635088635523, guid: cc2ad3929ff09fd44a64921ab7ab8b01, type: 3}
+  - {fileID: 8154785367732377476, guid: d31454bba9205614294b713b3b98cc58, type: 3}
+  - {fileID: 1034596828105880276, guid: d8b0639daca7aa340afddea4566b3e3b, type: 3}
+  _potions:
+  - {fileID: 297842067622995726, guid: a7055006a1959694e94915b5cd99cbe2, type: 3}
+  - {fileID: 1076223125078778579, guid: cd9f6ff180b4c4f4fbd17cf9e40c17e5, type: 3}
+  - {fileID: 8521523239049436162, guid: 646a745c7b9efc346af4480b77275451, type: 3}
+  - {fileID: 6574756345985193970, guid: 88b2072b8c0f904498887cd039e8c3b3, type: 3}
   _heroes:
   - {fileID: 7124813981815908393, guid: 57549d9aed1e886478833f720aacb2d4, type: 3}
   _monsters:

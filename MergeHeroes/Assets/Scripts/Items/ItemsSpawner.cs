@@ -20,7 +20,8 @@ public class ItemsSpawner : MonoBehaviour
     /// Спавнит предмет в свободной ячейке инвентаря
     /// </summary>
     /// <param name="count">Количество предметов для спавна</param>
-    public void SpawnItem(int count)
+    /// <param name="itemType">Тип предмет для спавна</param>
+    public void SpawnItem(int count, ItemTypes.Items itemType)
     {
         // Ограничиваем максимальное количество предметов для спавна количеством доступных ячеек инвентаря
         Mathf.Clamp(count, 1, Inventory.Slots.Count);
@@ -33,18 +34,24 @@ public class ItemsSpawner : MonoBehaviour
 
             if (slotToSpawn)
             {
-                // Спавним предмет в ячейке
-                Item item = Instantiate(gameSettingsSO.Items[1], slotToSpawn.transform).GetComponent<Item>();
+                switch (itemType)
+                {
+                    case ItemTypes.Items.Sword:
+                        SpawnSword(slotToSpawn);
+                        break;
 
-                // Делаем предмет ребенком ячейки
-                item.transform.SetParent(slotToSpawn.transform, true);
-                item.transform.position = slotToSpawn.transform.position;
+                    case ItemTypes.Items.Armour:
+                        SpawnArmour(slotToSpawn);
+                        break;
 
-                // Записываем ID родительской ячейки для предмета
-                item.ParentSlotId = slotToSpawn.ItemSlotID;
+                    case ItemTypes.Items.Potion:
+                        SpawnPotion(slotToSpawn);
+                        break;
 
-                // Отмечаем ячейку как занятую
-                slotToSpawn.IsOccupied = true;
+                    default:
+                        Debug.Log("No Such Item Type Found!");
+                        break;
+                }
             }
             else
             {
@@ -53,9 +60,7 @@ public class ItemsSpawner : MonoBehaviour
             }
         }
     }
-    #endregion
-
-    #region PUBLIC Methods
+    
     /// <summary>
     /// Находит первый свободный слот инвентаря и возвращает его. Если свободных слотов нет, то возвращает null
     /// </summary>
@@ -71,6 +76,68 @@ public class ItemsSpawner : MonoBehaviour
         }
 
         return null;
+    }
+    #endregion
+
+    #region PRIVATE Methods
+    /// <summary>
+    /// Спавнит меч в указанной ячейке инвентаря
+    /// </summary>
+    /// <param name="slotToSpawn">Ячейка инвентаря, в которой нужно заспавнить меч</param>
+    private void SpawnSword(ItemSlot slotToSpawn)
+    {
+        // Спавним предмет в ячейке
+        Sword sword = Instantiate(gameSettingsSO.Swords[0], slotToSpawn.transform).GetComponent<Sword>();
+
+        // Делаем предмет ребенком ячейки
+        sword.transform.SetParent(slotToSpawn.transform, true);
+        sword.transform.position = slotToSpawn.transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        sword.GetComponent<Item>().ParentSlotId = slotToSpawn.ItemSlotID;
+
+        // Отмечаем ячейку как занятую
+        slotToSpawn.IsOccupied = true;
+    }
+
+    /// <summary>
+    /// Спавнит броню в указанной ячейке инвентаря
+    /// </summary>
+    /// <param name="slotToSpawn">Ячейка инвентаря, в которой нужно заспавнить броню</param>
+    private void SpawnArmour(ItemSlot slotToSpawn)
+    {
+        // Спавним предмет в ячейке
+        Armour armour = Instantiate(gameSettingsSO.Armour[0], slotToSpawn.transform).GetComponent<Armour>();
+
+        // Делаем предмет ребенком ячейки
+        armour.transform.SetParent(slotToSpawn.transform, true);
+        armour.transform.position = slotToSpawn.transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        armour.GetComponent<Item>().ParentSlotId = slotToSpawn.ItemSlotID;
+
+        // Отмечаем ячейку как занятую
+        slotToSpawn.IsOccupied = true;
+    }
+
+    /// <summary>
+    /// Спавнит зелье в указанной ячейке инвентаря
+    /// </summary>
+    /// <param name="slotToSpawn">Ячейка инвентаря, в которой нужно заспавнить зелье</param>
+    private void SpawnPotion(ItemSlot slotToSpawn)
+    {
+        // Спавним предмет в ячейке
+        Potion potion = Instantiate(gameSettingsSO.Potions[0], slotToSpawn.transform).GetComponent<Potion>();
+
+        // Делаем предмет ребенком ячейки
+        potion.transform.SetParent(slotToSpawn.transform, true);
+        potion.transform.position = slotToSpawn.transform.position;
+
+        // Записываем ID родительской ячейки для предмета
+        potion.GetComponent<Item>().ParentSlotId = slotToSpawn.ItemSlotID;
+
+        // Отмечаем ячейку как занятую
+        slotToSpawn.IsOccupied = true;
     }
     #endregion
 

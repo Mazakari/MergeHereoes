@@ -22,24 +22,69 @@ public class LevelProgress : MonoBehaviour
     /// </summary>
     public static float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
 
-    // Текущий тир предмета для спавна
-    private static int _currentTierToBuy = 1;
+    #region Sword
+    // Текущий тир меча для спавна
+    private static int _currentSwordTierToBuy = 1;
     /// <summary>
-    /// Текущий тир предмета для спавна
+    /// Текущий тир меча для спавна
     /// </summary>
-    public static int CurrentTierToBuy { get { return _currentTierToBuy; } set { _currentTierToBuy = value; } }
+    public static int CurrentSwordTierToBuy { get { return _currentSwordTierToBuy; } set { _currentSwordTierToBuy = value; } }
 
-    private static float _currentItemBuyCost = 1f;// Текущая стоимость предмета для покупки
+    private static float _currentSwordBuyCost = 1f;// Текущая стоимость меча для покупки
     /// <summary>
-    /// Текущая стоимость предмета для покупки
+    /// Текущая стоимость меча для покупки
     /// </summary>
-    public static float CurrentItemBuyCost { get { return _currentItemBuyCost; } set { _currentItemBuyCost = value; } }
+    public static float CurrentSwordBuyCost { get { return _currentSwordBuyCost; } set { _currentSwordBuyCost = value; } }
 
-    private static float _itemCostMultiplier = 1.1f;
+    private static float _swordCostMultiplier = 1.1f;
     /// <summary>
-    /// Множитель роста стоимости предмета
+    /// Множитель роста стоимости меча
     /// </summary>
-    public static float ItemCostMultiplier { get { return _itemCostMultiplier; } }
+    public static float SwordCostMultiplier { get { return _swordCostMultiplier; } }
+    #endregion
+
+    #region Armour
+    // Текущий тир брони для спавна
+    private static int _currentArmourTierToBuy = 1;
+    /// <summary>
+    /// Текущий тир брони для спавна
+    /// </summary>
+    public static int CurrentArmourTierToBuy { get { return _currentArmourTierToBuy; } set { _currentArmourTierToBuy = value; } }
+
+    private static float _currentArmourBuyCost = 1f;// Текущая стоимость брони для покупки
+    /// <summary>
+    /// Текущая стоимость брони для покупки
+    /// </summary>
+    public static float CurrentArmourBuyCost { get { return _currentArmourBuyCost; } set { _currentArmourBuyCost = value; } }
+
+    private static float _armourCostMultiplier = 1.1f;
+    /// <summary>
+    /// Множитель роста стоимости брони
+    /// </summary>
+    public static float ArmourCostMultiplier { get { return _armourCostMultiplier; } }
+    #endregion
+
+    #region Potion
+    // Текущий тир зелья для спавна
+    private static int _currentPotionTierToBuy = 1;
+    /// <summary>
+    /// Текущий тир зелья для спавна
+    /// </summary>
+    public static int CurrentPotionTierToBuy { get { return _currentPotionTierToBuy; } set { _currentPotionTierToBuy = value; } }
+
+    private static float _currentPotionBuyCost = 1f;// Текущая стоимость зелья для покупки
+    /// <summary>
+    /// Текущая стоимость зелья для покупки
+    /// </summary>
+    public static float CurrentPotionBuyCost { get { return _currentPotionBuyCost; } set { _currentPotionBuyCost = value; } }
+
+    private static float _potionCostMultiplier = 1.1f;
+    /// <summary>
+    /// Множитель роста стоимости зелья
+    /// </summary>
+    public static float PotionCostMultiplier { get { return _potionCostMultiplier; } }
+    #endregion
+
     #endregion
 
     #region UNITY Methods

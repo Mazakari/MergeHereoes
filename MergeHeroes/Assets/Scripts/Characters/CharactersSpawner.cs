@@ -50,7 +50,9 @@ public class CharactersSpawner : MonoBehaviour
         SpawnMonster();
         SpawnHero();
 
-        _heroStatsUI.UpdateHeroStats(_heroStatsUI.DefaultItemSprite, 0, _hero.Damage, _monster.MonsterGoldPerKill);
+        _heroStatsUI.UpdateHeroDamage(_hero.Damage);
+        _heroStatsUI.UpdateHeroArmour(_hero.Armour);
+        _heroStatsUI.UpdateGoldPerKill(_monster.MonsterGoldPerKill);
     }
 
     

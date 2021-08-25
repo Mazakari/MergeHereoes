@@ -33,21 +33,42 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _canvasGroup.alpha = 0.6f;
-        _canvasGroup.blocksRaycasts = false;
-        _isDragging = true;
-        Debug.Log("OnBeginDrag");
+        if (!eventData.pointerDrag.GetComponent<Item>().IsEquipped)
+        {
+            _canvasGroup.alpha = 0.6f;
+            _canvasGroup.blocksRaycasts = false;
+            _isDragging = true;
+            Debug.Log("OnBeginDrag");
+        }
+        else
+        {
+            // ќбнул€ем предмет, который тащим, чтобы не было NullReference при попытке перетащить предмет в €чейку инвентар€ дл€ мержа
+            eventData.pointerDrag = null;
+            Debug.Log("OnBeginDrag - Item is Equipped!");
+        }
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+        if (!eventData.pointerDrag.GetComponent<Item>().IsEquipped)
+        {
+            _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
 
-        Debug.Log("OnDrag");
+            Debug.Log("OnDrag");
+        }
+        else
+        {
+            // ќбнул€ем предмет, который тащим, чтобы не было NullReference при попытке перетащить предмет в €чейку инвентар€ дл€ мержа
+            eventData.pointerDrag = null;
+            Debug.Log("OnDrag - Item is Equipped!");
+        }
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+       
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
 

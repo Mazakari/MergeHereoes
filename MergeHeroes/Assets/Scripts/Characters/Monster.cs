@@ -25,9 +25,7 @@ public class Monster : MonoBehaviour
 
     private void Awake()
     {
-        _monsterHpBar = FindObjectOfType<Slider>();
-        _monsterNameText = _monsterHpBar.transform.Find("MonsterNameText").GetComponent<Text>();
-
+        SetMonsterHealthBar();
     }
     // Start is called before the first frame update
     void Start()
@@ -60,6 +58,28 @@ public class Monster : MonoBehaviour
             OnMonsterDead?.Invoke(this, EventArgs.Empty);
         }
     }
-}
     #endregion
+
+    #region PRIVATE Methods
+    /// <summary>
+    /// Находит HP бар монстра и текст его имени и сохраняет ссылки на них
+    /// </summary>
+    private void SetMonsterHealthBar()
+    {
+        Slider[] hpBars = FindObjectsOfType<Slider>();
+
+        for (int i = 0; i < hpBars.Length; i++)
+        {
+            if (hpBars[i].transform.Find("MonsterNameText"))
+            {
+                _monsterHpBar = hpBars[i];
+                _monsterNameText = _monsterHpBar.transform.Find("MonsterNameText").GetComponent<Text>();
+            }
+        }
+    }
+    #endregion
+}
+
+
+
 

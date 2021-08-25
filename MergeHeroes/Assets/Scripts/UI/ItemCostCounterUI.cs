@@ -21,7 +21,7 @@ public class ItemCostCounterUI : MonoBehaviour
     void Start()
     {
         UpdateUtemCost();
-        UpdateItemSprite(ItemsSpawner.gameSettingsSO.Items[1].GetComponent<Image>().sprite);
+        UpdateItemSprite(ItemsSpawner.gameSettingsSO.Swords[1].GetComponent<Image>().sprite);
     }
     #endregion
 
@@ -34,7 +34,7 @@ public class ItemCostCounterUI : MonoBehaviour
     /// </summary>
     public static void UpdateUtemCost()
     {
-        _itemCostText.text = $"{LevelProgress.CurrentItemBuyCost:F2}";
+        _itemCostText.text = $"{LevelProgress.CurrentSwordBuyCost:F2}";
     }
 
     /// <summary>

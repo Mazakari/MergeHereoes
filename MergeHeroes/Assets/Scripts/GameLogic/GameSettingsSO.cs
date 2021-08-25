@@ -6,12 +6,27 @@ using UnityEngine;
 public class GameSettingsSO : ScriptableObject
 {
     #region VARIABLES
-    [SerializeField] private GameObject[] _items = null;
+    [SerializeField] private GameObject[] _swords = null;
 
     /// <summary>
-    /// Коллекция предметов для мержа
+    /// Коллекция мечей для мержа
     /// </summary>
-    public GameObject[] Items { get { return _items; } }
+    public GameObject[] Swords { get { return _swords; } }
+
+    [SerializeField] private GameObject[] _armour = null;
+
+    /// <summary>
+    /// Коллекция брони для мержа
+    /// </summary>
+    public GameObject[] Armour { get { return _armour; } }
+
+    [SerializeField] private GameObject[] _potions = null;
+
+    /// <summary>
+    /// Коллекция зелий для мержа
+    /// </summary>
+    public GameObject[] Potions { get { return _potions; } }
+
 
     [SerializeField] private GameObject[] _heroes = null;
 

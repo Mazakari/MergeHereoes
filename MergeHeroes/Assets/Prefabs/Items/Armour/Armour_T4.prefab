@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2549405253882983169
+--- !u!1 &1034596828105880276
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,26 +8,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2549405253882983168}
-  - component: {fileID: 2549405253882983182}
-  - component: {fileID: 2549405253882983183}
-  - component: {fileID: 2549405253882983180}
-  - component: {fileID: 2549405253882983181}
-  - component: {fileID: 2549405253882983179}
+  - component: {fileID: 1034596828105880277}
+  - component: {fileID: 1034596828105880283}
+  - component: {fileID: 1034596828105880282}
+  - component: {fileID: 1034596828105880281}
+  - component: {fileID: 1034596828105880280}
+  - component: {fileID: 7962711731146651840}
+  - component: {fileID: 1894401177295868673}
   m_Layer: 5
-  m_Name: Sword_T8
+  m_Name: Armour_T4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2549405253882983168
+--- !u!224 &1034596828105880277
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,21 +41,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2549405253882983182
+--- !u!222 &1034596828105880283
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
   m_CullTransparentMesh: 1
---- !u!114 &2549405253882983183
+--- !u!114 &1034596828105880282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7328482020214732356, guid: 6222a7a470f23db4a9dd32ce6f2314b9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d13012f4abce7b241900001bf716f66e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -78,43 +79,55 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &2549405253882983180
+--- !u!225 &1034596828105880281
 CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &2549405253882983181
+--- !u!114 &1034596828105880280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ec3d90570aa23d43902d49b4c91e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2549405253882983179
+--- !u!114 &7962711731146651840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549405253882983169}
+  m_GameObject: {fileID: 1034596828105880276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d2aba169c9bb447b546b90c5ffd688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _armourAmount: 4
+--- !u!114 &1894401177295868673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034596828105880276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4654a02b04f0ba42b67e97d6517de67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curItemType: 8
-  _itemTier: 8
-  _itemDamage: 8
-  _itemCost: 8
+  _type: 1
+  _tier: 4
+  _cost: 4

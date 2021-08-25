@@ -5,7 +5,33 @@ using UnityEngine.EventSystems;
 
 public class HeroItemSlot : MonoBehaviour, IDropHandler
 {
+    #region VARIABLES
+    private int _itemSlotID = -1;
+    /// <summary>
+    /// Идентификатор ячейки инвентаря
+    /// </summary>
+    public int ItemSlotID { get { return _itemSlotID; } set { _itemSlotID = value; } }
+
+    private bool _isOccupied = false;
+    /// <summary>
+    /// Занята ли ячейка предметом
+    /// </summary>
+    public bool IsOccupied { get { return _isOccupied; } set { _isOccupied = value; } }
+
+    [SerializeField] private ItemTypes.Items _itemSlotType;
+    /// <summary>
+    /// Тип ячейки инвентаря героя
+    /// </summary>
+    public ItemTypes.Items ItemSlotType { get { return _itemSlotType; } }
+
+    
+    #endregion
+
     #region EVENTS
+    /// <summary>
+    /// Делает предмет ребенком текущей ячейки и устанавливает IsOccupied в true
+    /// </summary>
+    /// <param name="eventData">Информация по перетягиваемому объекту</param>
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null)
@@ -13,21 +39,56 @@ public class HeroItemSlot : MonoBehaviour, IDropHandler
             // Кэшируем компонент предмета в переменную
             Item itemBeingDragged = eventData.pointerDrag.GetComponent<Item>();
 
-            // Кэшируем героя в переменную
-            Hero hero = FindObjectOfType<Hero>();
-
-            // // Если предмет в ячейке тиром ниже перетягиваемого
-            if (hero.EquippedItem.ItemTier < itemBeingDragged.ItemTier)
+            // Проверяем совпадают ли тип ячейки и предмета
+            if (itemBeingDragged.Type == _itemSlotType)
             {
-                // Очищаем ячейку предмета в инвентаре
-                FindItemParentSlot(itemBeingDragged).IsOccupied = false;
+                // Проверяем занята ли ячейка, в которую хотим положить предмет
+                if (!_isOccupied)
+                {
+                    // Проверяем отличается ли ячейка, в которую упал предмет от исходной ячейки предмета
+                    if (FindItemParentSlot(itemBeingDragged).ItemSlotID != _itemSlotID)
+                    {
+                        // Кладем предмет в ячейку
+                        PutItemInSlot(itemBeingDragged);
 
-                // то экипируем предмет на героя
-                hero.EquipItem(itemBeingDragged);
+                        // Одеваем предмет на героя
+                        CharactersSpawner.Hero.EquipItem(itemBeingDragged);
+                    }
+                }
+                else if (_isOccupied)
+                {
+                    Item thisItem = GetThisItemSlotChild();
+
+                    // Проверяем есть ли в текущей ячейке предмет
+                    if (thisItem)
+                    {
+                        // Проверяем не один ли и тот же это предмет
+                        if (thisItem.ParentSlotId != itemBeingDragged.ParentSlotId)
+                        {
+                            // Проверяем, совпадают ли типы и тиры предметов
+                            if (thisItem.Type == itemBeingDragged.Type && thisItem.Tier == itemBeingDragged.Tier)
+                            {
+                                // Если да, то мержим их
+                                Merge(itemBeingDragged, thisItem);
+                            }
+                            else
+                            {
+                                ResetItemPosition(itemBeingDragged);
+                            }
+                        }
+                        else
+                        {
+                            ResetItemPosition(itemBeingDragged);
+                        }
+                    }
+                }
+                else
+                {
+                    ResetItemPosition(itemBeingDragged);
+                }
             }
             else
             {
-                // Если предмет в ячейке тиром выше перетягиваемого, то возвращаем предмет в свою ячейку
                 ResetItemPosition(itemBeingDragged);
             }
         }
@@ -36,6 +97,32 @@ public class HeroItemSlot : MonoBehaviour, IDropHandler
     #endregion
 
     #region PRIVATE Methods
+    /// <summary>
+    /// Устанавливает предмет в ячейку инвентаря
+    /// </summary>
+    /// <param name="Item">Предмет для расположения в ячейке</param>
+    private void PutItemInSlot(Item item)
+    {
+        // Переключаем флаг IsDragging предмета в false
+        item.GetComponent<DragDrop>().IsDragging = false;
+
+        // Переключаем флаг IsEquipped предмета в true
+        item.IsEquipped = true;
+
+        // Освобождаем предыдущую ячейку предмета (isOccupied = false)
+        FindItemParentSlot(item).IsOccupied = false;
+
+        // Делаем предмет ребенком текущей ячейки и обнуляем позицию предмета
+        item.gameObject.transform.SetParent(gameObject.transform, true);
+        item.gameObject.transform.position = gameObject.transform.position;
+
+        // Отмечаем текущую ячейку как занятую
+        _isOccupied = true;
+
+        // Меняем Parent ID у предмета на новый
+        item.ParentSlotId = ItemSlotID;
+    }
+
     /// <summary>
     /// Возвращает предмет в свою исходную ячейку
     /// </summary>
@@ -62,6 +149,251 @@ public class HeroItemSlot : MonoBehaviour, IDropHandler
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Возвращает ребенка текущей ячейки инвентаря типа Item. Если ребенка нет, то возвращает null
+    /// </summary>
+    /// <returns>Item</returns>
+    private Item GetThisItemSlotChild()
+    {
+        // Проверяем есть ли у текущей ячейки инвентаря дети и возвращаем первого, если они есть.
+        // Иначе возвращаем null
+        if (transform.childCount > 0)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).GetComponent<Item>())
+                {
+                    return transform.GetChild(i).GetComponent<Item>();
+                }
+            }
+
+            return null;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Удаляет 2 одинаковых предмета и спавнит новый в этой ячейке
+    /// </summary>
+    /// <param name="itemBeingDragged">Предмет, который перетащили на эту ячейку</param>
+    /// <param name="thisItemSlotItem">Предмет, находящийся в этой ячейке</param>
+    private void Merge(Item itemBeingDragged, Item thisItemSlotItem)
+    {
+        // Освобождаем ячейки у обоих предметов
+        FindItemParentSlot(itemBeingDragged).IsOccupied = false;
+        _isOccupied = false;
+
+        // Спавним предмет тиром выше в ячейке предмета, на который перетащили и делаем эту ячейку родителем предмета тиром выше
+        SpawnNextTierItem(thisItemSlotItem.Tier, thisItemSlotItem.Type);
+
+        // Удаляем оба предмета
+        Destroy(itemBeingDragged.gameObject);
+        Destroy(thisItemSlotItem.gameObject);
+    }
+
+    /// <summary>
+    /// Находит предмет на 1 тир выше указанного и спавнит предмет тиром выше в этой ячейке
+    /// </summary>
+    /// <param name="currentItemTier">Текущий тир предмета</param>
+    private void SpawnNextTierItem(int currentItemTier, ItemTypes.Items itemType)
+    {
+        switch (itemType)
+        {
+            case ItemTypes.Items.Sword:
+                SpawnSword(currentItemTier);
+                break;
+
+            case ItemTypes.Items.Armour:
+                SpawnArmour(currentItemTier);
+                break;
+
+            case ItemTypes.Items.Potion:
+                SpawnPotion(currentItemTier);
+                break;
+
+            default:
+                Debug.Log("No Such Item Type Found!");
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа меч
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnSword(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Swords.Length; i++)
+        {
+            // Ищем предмет на 1 тир выше текущего
+            if (ItemsSpawner.gameSettingsSO.Swords[i].GetComponent<Item>().Tier == itemTier + 1)
+            {
+                // Спавним предмет в этой ячейке
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Swords[i], transform).GetComponent<Item>();
+
+                // Делаем предмет ребенком ячейки
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
+
+                // Отмечаем меч как экипированный, т.к. спавним его в ячейке меча в инвентаре героя
+                nextTieriIem.IsEquipped = true;
+
+                // Записываем ID родительской ячейки для предмета
+                nextTieriIem.ParentSlotId = _itemSlotID;
+
+                // Отмечаем ячейку как занятую
+                _isOccupied = true;
+
+                // Одеваем меч на героя
+                CharactersSpawner.Hero.EquipItem(nextTieriIem);
+
+                return;
+            }
+
+        }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Swords[itemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Отмечаем меч как экипированный, т.к. спавним его в ячейке меча в инвентаре героя
+        item.IsEquipped = true;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
+
+        // Одеваем меч на героя
+        CharactersSpawner.Hero.EquipItem(item);
+
+        Debug.Log($"T{itemTier + 1} item not exist!");
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа броня
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnArmour(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Armour.Length; i++)
+        {
+            // Ищем предмет на 1 тир выше текущего
+            if (ItemsSpawner.gameSettingsSO.Armour[i].GetComponent<Item>().Tier == itemTier + 1)
+            {
+                // Спавним предмет в этой ячейке
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Armour[i], transform).GetComponent<Item>();
+
+                // Делаем предмет ребенком ячейки
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
+
+                // Отмечаем броню как экипированную, т.к. спавним ее в ячейке брони в инвентаре героя
+                nextTieriIem.IsEquipped = true;
+
+                // Записываем ID родительской ячейки для предмета
+                nextTieriIem.ParentSlotId = _itemSlotID;
+
+                // Отмечаем ячейку как занятую
+                _isOccupied = true;
+
+                // Одеваем меч на героя
+                CharactersSpawner.Hero.EquipItem(nextTieriIem);
+
+                return;
+            }
+
+        }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Armour[itemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Отмечаем броню как экипированную, т.к. спавним ее в ячейке брони в инвентаре героя
+        item.IsEquipped = true;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
+
+        // Одеваем меч на героя
+        CharactersSpawner.Hero.EquipItem(item);
+
+        Debug.Log($"T{itemTier + 1} item not exist!");
+    }
+
+    /// <summary>
+    /// Спавнит следующий тир предмета типа зелье
+    /// </summary>
+    /// <param name="itemTier">Текущий тир предмета</param>
+    private void SpawnPotion(int itemTier)
+    {
+        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Potions.Length; i++)
+        {
+            // Ищем предмет на 1 тир выше текущего
+            if (ItemsSpawner.gameSettingsSO.Potions[i].GetComponent<Item>().Tier == itemTier + 1)
+            {
+                // Спавним предмет в этой ячейке
+                Item nextTieriIem = Instantiate(ItemsSpawner.gameSettingsSO.Potions[i], transform).GetComponent<Item>();
+
+                // Делаем предмет ребенком ячейки
+                nextTieriIem.transform.SetParent(transform, true);
+                nextTieriIem.transform.position = transform.position;
+
+                // Отмечаем зелье как экипированное, т.к. спавним его в ячейке зелья в инвентаре героя
+                nextTieriIem.IsEquipped = true;
+
+                // Записываем ID родительской ячейки для предмета
+                nextTieriIem.ParentSlotId = _itemSlotID;
+
+                // Отмечаем ячейку как занятую
+                _isOccupied = true;
+
+                // Одеваем меч на героя
+                CharactersSpawner.Hero.EquipItem(nextTieriIem);
+
+                return;
+            }
+
+        }
+
+        // Если такой предмет не был найден, то спавним предмет последнего существующего тира
+        // Спавним предмет в этой ячейке
+        Item item = Instantiate(ItemsSpawner.gameSettingsSO.Potions[itemTier], transform).GetComponent<Item>();
+
+        // Делаем предмет ребенком ячейки
+        item.transform.SetParent(transform, true);
+        item.transform.position = transform.position;
+
+        // Отмечаем зелье как экипированное, т.к. спавним его в ячейке зелья в инвентаре героя
+        item.IsEquipped = true;
+
+        // Записываем ID родительской ячейки для предмета
+        item.ParentSlotId = _itemSlotID;
+
+        // Отмечаем ячейку как занятую
+        _isOccupied = true;
+
+        // Одеваем меч на героя
+        CharactersSpawner.Hero.EquipItem(item);
+
+        Debug.Log($"T{itemTier + 1} item not exist!");
     }
     #endregion
 

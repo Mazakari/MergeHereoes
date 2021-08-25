@@ -26,7 +26,9 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         SetInventorySlots();
-        _itemsSpawner.SpawnItem(2);
+        _itemsSpawner.SpawnItem(2, ItemTypes.Items.Sword);
+        _itemsSpawner.SpawnItem(2, ItemTypes.Items.Armour);
+        _itemsSpawner.SpawnItem(2, ItemTypes.Items.Potion);
     }
     #endregion
 
@@ -44,17 +46,6 @@ public class Inventory : MonoBehaviour
         {
             _slots.Add(_inventorySlotsContainer.GetChild(i).GetComponent<ItemSlot>());
             _slots[i].ItemSlotID = i;
-        }
-    }
-
-    /// <summary>
-    /// DEBUG Выводит имена и ID всех существующих ячеек инвентаря в консоль
-    /// </summary>
-    private void PrintSlots()
-    {
-        for (int i = 0; i < _slots.Count; i++)
-        {
-            Debug.Log($"Slot {_slots[i].name} has ID {_slots[i].ItemSlotID}");
         }
     }
     #endregion
