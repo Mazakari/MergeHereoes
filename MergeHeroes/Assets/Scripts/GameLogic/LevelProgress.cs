@@ -100,6 +100,11 @@ public class LevelProgress : MonoBehaviour
             StartCoroutine(_damageCoroutine);
         }
     }
+
+    private void Update()
+    {
+        Debug.Log(_currentSwordBuyCost);
+    }
     #endregion
 
     #region PRIVATE Methods
@@ -114,7 +119,11 @@ public class LevelProgress : MonoBehaviour
         {
             if (CharactersSpawner.Monster != null)
             {
-                CharactersSpawner.Monster.UpdateHP(CharactersSpawner.Hero.Damage);
+                // Наносим урон монстру
+                CharactersSpawner.Monster.GetDamage(CharactersSpawner.Hero.Damage);
+
+                // Наносим урон герою
+                CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monster.MonsterDamage);
             }
             yield return new WaitForSeconds(_heroAttackDelay); 
         }

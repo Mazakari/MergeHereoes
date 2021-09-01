@@ -117,4 +117,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterName: Slime T8
   _monsterHp: 45
+  _monsterDamage: 9
   _monsterGoldPerKill: 4.5

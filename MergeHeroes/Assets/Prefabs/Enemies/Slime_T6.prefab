@@ -117,4 +117,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterName: Slime T6
   _monsterHp: 35
+  _monsterDamage: 7
   _monsterGoldPerKill: 3.5

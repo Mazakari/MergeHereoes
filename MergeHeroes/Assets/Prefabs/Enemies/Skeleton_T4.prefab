@@ -117,4 +117,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterName: Skeleton T4
   _monsterHp: 25
+  _monsterDamage: 5
   _monsterGoldPerKill: 2.5

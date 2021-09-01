@@ -1,5 +1,6 @@
 // Roman Baranov 21.07.202
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,23 +13,23 @@ public class Hero : MonoBehaviour
     /// </summary>
     public float Damage { get { return _damage; } }
 
-
     private float _armour = 0.5f;
     /// <summary>
     /// Текущий показатель брони героя
     /// </summary>
     public float Armour { get { return _armour; } }
 
-
-    private float _health = 100f;
+    [SerializeField] private float _health = 100f;
     /// <summary>
     /// Текущий показатель здоровья героя
     /// </summary>
     public float Health { get { return _health; } }
 
+    private Slider _heroHpBar = null;// Ссылка на HP бар монстра на сцене
+
+    private Text _heroHealthStatusText = null;// Ссылка на компонент со статусом здоровья героя
 
     private HeroStatsUI _heroStatsUI = null;// Ссылка на скрипт с управлением отображения статистикой героя
-
 
     private Sword _equippedSword = null;
     /// <summary>
@@ -36,25 +37,38 @@ public class Hero : MonoBehaviour
     /// </summary>
     public Sword EquippedSword { get { return _equippedSword; } }
 
-
     private Armour _equippedArmour = null;
     /// <summary>
     /// Броня, экипированная в данный момент на герое
     /// </summary>
     public Armour EquippedArmour { get { return _equippedArmour; } }
 
-
     private Potion _equippedPotion = null;
     /// <summary>
     /// Зелье, экипированное в данный момент на герое
     /// </summary>
     public Potion EquippedPotion { get { return _equippedPotion; } }
+
+
+    /// <summary>
+    /// Событие вызывается при смерти героя
+    /// </summary>
+    public static event EventHandler OnHeroDead;
     #endregion
 
     #region UNITY Methods
     private void Awake()
     {
         _heroStatsUI = FindObjectOfType<HeroStatsUI>();
+        SetHeroHealthBar();
+    }
+
+    private void Start()
+    {
+        _heroHpBar.maxValue = _health;
+        _heroHpBar.value = _heroHpBar.maxValue;
+
+        _heroHealthStatusText.text = $"{_heroHpBar.value} / {_heroHpBar.maxValue}";
     }
     #endregion
 
@@ -82,6 +96,40 @@ public class Hero : MonoBehaviour
             Debug.Log($"This item type cannot be found");
         }
        
+    }
+
+    /// <summary>
+    /// Обновляет значение жизни героя. Если он погибает, то вызывается событие OnHeroDead
+    /// </summary>
+    /// <param name="damage">значение, на которое нужно уменшить HP героя</param>
+    public void GetDamage(float damage)
+    {
+        // Обнуляю урон, если он отрицательный после вычитания показателя брони
+        float diminishedDamage = damage - _armour;
+        if (diminishedDamage < 0)
+        {
+            diminishedDamage = 0.0f;
+        }
+
+        Debug.Log($"Hero.GetDamage clamped diminishedDamage = {diminishedDamage}");
+        Debug.Log($"Hero.health = {_health}");
+
+        if (_health - diminishedDamage > 0)
+        {
+            _health -= diminishedDamage;
+
+            //Обновляем хп бар монстра
+            _heroHpBar.value -= diminishedDamage;
+
+            // Обновляем статус здоровья героя
+            _heroHealthStatusText.text = $"{_heroHpBar.value} / {_heroHpBar.maxValue}";
+        }
+        else
+        {
+            // Герой умер, отправляем событие
+            OnHeroDead?.Invoke(this, EventArgs.Empty);
+            Debug.Log($"Hero {gameObject.name} is Dead");
+        }
     }
     #endregion
 
@@ -135,6 +183,23 @@ public class Hero : MonoBehaviour
         _health += _equippedPotion.BonusHpAmount;
 
         Debug.Log($"New hero health amount{_health}");
+    }
+
+    /// <summary>
+    /// Находит HP бар героя и сохраняет ссылку на него
+    /// </summary>
+    private void SetHeroHealthBar()
+    {
+        Slider[] hpBars = FindObjectsOfType<Slider>();
+
+        for (int i = 0; i < hpBars.Length; i++)
+        {
+            if (hpBars[i].gameObject.name == "HeroHPBar")
+            {
+                _heroHpBar = hpBars[i];
+                _heroHealthStatusText = _heroHpBar.transform.Find("Fill Area").transform.Find("HeroHealthStatusText").GetComponent<Text>();
+            }
+        }
     }
     #endregion
 }

@@ -117,4 +117,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterName: Skeleton T2
   _monsterHp: 15
+  _monsterDamage: 3
   _monsterGoldPerKill: 1.5
