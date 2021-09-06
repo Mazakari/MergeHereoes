@@ -28,7 +28,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     #region EVENTS
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("OnPointerDown");
+        //Debug.Log("OnPointerDown");
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -38,13 +38,13 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             _canvasGroup.alpha = 0.6f;
             _canvasGroup.blocksRaycasts = false;
             _isDragging = true;
-            Debug.Log("OnBeginDrag");
+            //Debug.Log("OnBeginDrag");
         }
         else
         {
             // ќбнул€ем предмет, который тащим, чтобы не было NullReference при попытке перетащить предмет в €чейку инвентар€ дл€ мержа
             eventData.pointerDrag = null;
-            Debug.Log("OnBeginDrag - Item is Equipped!");
+            //Debug.Log("OnBeginDrag - Item is Equipped!");
         }
         
     }
@@ -55,13 +55,13 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
 
-            Debug.Log("OnDrag");
+            //Debug.Log("OnDrag");
         }
         else
         {
             // ќбнул€ем предмет, который тащим, чтобы не было NullReference при попытке перетащить предмет в €чейку инвентар€ дл€ мержа
             eventData.pointerDrag = null;
-            Debug.Log("OnDrag - Item is Equipped!");
+            //Debug.Log("OnDrag - Item is Equipped!");
         }
         
     }
@@ -76,7 +76,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             ResetItemPosition(GetComponent<Item>());
         }
-        Debug.Log("OnEndDrag");
+        //Debug.Log("OnEndDrag");
     }
     #endregion
 

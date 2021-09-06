@@ -111,8 +111,8 @@ public class Hero : MonoBehaviour
             diminishedDamage = 0.0f;
         }
 
-        Debug.Log($"Hero.GetDamage clamped diminishedDamage = {diminishedDamage}");
-        Debug.Log($"Hero.health = {_health}");
+        //Debug.Log($"Hero.GetDamage clamped diminishedDamage = {diminishedDamage}");
+        //Debug.Log($"Hero.health = {_health}");
 
         if (_health - diminishedDamage > 0)
         {
@@ -128,7 +128,7 @@ public class Hero : MonoBehaviour
         {
             // Герой умер, отправляем событие
             OnHeroDead?.Invoke(this, EventArgs.Empty);
-            Debug.Log($"Hero {gameObject.name} is Dead");
+            //Debug.Log($"Hero {gameObject.name} is Dead");
         }
     }
     #endregion
@@ -151,7 +151,7 @@ public class Hero : MonoBehaviour
 
         // Обновляем GoldPerKill в UI ??????????
         _heroStatsUI.UpdateGoldPerKill(LevelProgress.GoldPerKill);
-        Debug.Log("Why change GPK here? TODO");
+        //Debug.Log("Why change GPK here? TODO");
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ public class Hero : MonoBehaviour
         // Обновляем показатель брони героя
         _health += _equippedPotion.BonusHpAmount;
 
-        Debug.Log($"New hero health amount{_health}");
+        //Debug.Log($"New hero health amount{_health}");
     }
 
     /// <summary>
@@ -198,6 +198,7 @@ public class Hero : MonoBehaviour
             {
                 _heroHpBar = hpBars[i];
                 _heroHealthStatusText = _heroHpBar.transform.Find("Fill Area").transform.Find("HeroHealthStatusText").GetComponent<Text>();
+                return;
             }
         }
     }

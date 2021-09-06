@@ -96,14 +96,14 @@ public class LevelProgress : MonoBehaviour
         }
         else
         {
-            _damageCoroutine = DamageMonsters();
+            _damageCoroutine = DamageLoop();
             StartCoroutine(_damageCoroutine);
         }
     }
 
     private void Update()
     {
-        Debug.Log(_currentSwordBuyCost);
+        //Debug.Log(_currentSwordBuyCost);
     }
     #endregion
 
@@ -113,7 +113,7 @@ public class LevelProgress : MonoBehaviour
     /// Курутина запускает постоянный урон по монстрам
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DamageMonsters()
+    private IEnumerator DamageLoop()
     {
         while (true)
         {
@@ -121,7 +121,10 @@ public class LevelProgress : MonoBehaviour
             {
                 // Наносим урон монстру
                 CharactersSpawner.Monster.GetDamage(CharactersSpawner.Hero.Damage);
+            }
 
+            if (CharactersSpawner.Hero != null)
+            {
                 // Наносим урон герою
                 CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monster.MonsterDamage);
             }

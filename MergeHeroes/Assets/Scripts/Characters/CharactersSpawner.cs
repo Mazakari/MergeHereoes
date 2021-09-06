@@ -10,6 +10,8 @@ public class CharactersSpawner : MonoBehaviour
     private HeroStatsUI _heroStatsUI = null;// Ссылка на скрипт с отображением статистики героя в UI для обновления значений
 
     private Vector2 _camWorldPos;// Левая нижняя точка камеры в мировых координатах
+    private Vector2 _monsterSpawnPos;// Точка спавна монстра
+    private Vector2 _heroSpawnPos;// Точка спавна героя
 
     [SerializeField] private Transform _heroesParent = null;// Родительский объект для спавна героев
     [SerializeField] private Transform _monstersParent = null;// Родительский объект для спавна монстров
@@ -37,16 +39,21 @@ public class CharactersSpawner : MonoBehaviour
     #region UNITY Methods
     private void Awake()
     {
+        Debug.Log($"_heroesParent = {_heroesParent.name}");
+        Debug.Log($"_monstersParent = {_monstersParent.name}");
+
+        Monster.OnMonsterDead += Monster_OnMonsterDead;
+
         _gameSettingsSO = Resources.Load<GameSettingsSO>("ScriptableObjects/GameSettingsSO");
         _heroStatsUI = FindObjectOfType<HeroStatsUI>();
+
+        _camWorldPos = Camera.main.ViewportToWorldPoint(Camera.main.transform.position);
+        _monsterSpawnPos = new Vector2(-_camWorldPos.x / 2, 0);
+        _heroSpawnPos = new Vector2(_camWorldPos.x / 2, 0);
     }
     // Start is called before the first frame update
     void Start()
     {
-        Monster.OnMonsterDead += Monster_OnMonsterDead;
-
-        _camWorldPos = Camera.main.ViewportToWorldPoint(Camera.main.transform.position);
-
         SpawnMonster();
         SpawnHero();
 
@@ -54,8 +61,6 @@ public class CharactersSpawner : MonoBehaviour
         _heroStatsUI.UpdateHeroArmour(_hero.Armour);
         _heroStatsUI.UpdateGoldPerKill(_monster.MonsterGoldPerKill);
     }
-
-    
     #endregion
 
     #region PRIVATE Methods
@@ -64,15 +69,14 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     private void SpawnHero()
     {
-        Vector2 spawnPos = new Vector2(_camWorldPos.x / 2, 0);
         int rndIndex = UnityEngine.Random.Range(0, _gameSettingsSO.Heroes.Length);
         GameObject hero = _gameSettingsSO.Heroes[rndIndex];
-
-        GameObject heroClone = Instantiate(hero, spawnPos, Quaternion.identity, _heroesParent);
+       
+        GameObject heroClone = Instantiate(hero, _heroSpawnPos, Quaternion.identity, _heroesParent);
 
         // Добавляем заспавленного героя в активные на сцене
         _hero = heroClone.GetComponent<Hero>();
-
+        //Debug.Log($"Hero {_hero} spawned!");
     }
     #endregion
 
@@ -82,14 +86,12 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public void SpawnMonster()
     {
-        // Выбираем позицию монстра для спавна
-        Vector2 spawnPos = new Vector2(-_camWorldPos.x / 2, 0);
-
         // Выбираем монстра для спавна
         GameObject monster = _gameSettingsSO.Monsters[_monsterIndexToSpawn];
 
+        
         // Спавним монстра
-        GameObject monsterClone = Instantiate(monster, spawnPos, Quaternion.identity, _monstersParent);
+        GameObject monsterClone = Instantiate(monster, _monsterSpawnPos, Quaternion.identity, _monstersParent);
 
         // Проверяем можно ли инкрементировать индекс монстра
         if (_monsterIndexToSpawn + 1 < _gameSettingsSO.Monsters.Length)
@@ -103,6 +105,9 @@ public class CharactersSpawner : MonoBehaviour
 
         // Обновляем показатель GoldPerKill в LevelProgress
         LevelProgress.GoldPerKill = _monster.MonsterGoldPerKill;
+
+        //Debug.Log($"SpawnMonster - Monster {_monster} spawned!");
+
 
         // Отправляем событие о спавне монстра
         OnMonsterSpawn?.Invoke(this, EventArgs.Empty);

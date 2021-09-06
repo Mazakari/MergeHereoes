@@ -31,7 +31,7 @@ public class GameState_UI : MonoBehaviour
 
         // Находим ссылки на кнопки
         // Кнопка с настройками игры
-        _gameSettingsButton = transform.Find("GameSettingsButton").GetComponent<Button>();
+        _gameSettingsButton = transform.Find("GameSettings").Find("GameSettingsButton").GetComponent<Button>();
         _gameSettingsButton.onClick.AddListener(SwitchGameSettingsPopupState);
 
         // Кнопка возврата на уровень
@@ -168,6 +168,7 @@ public class GameState_UI : MonoBehaviour
     /// </summary>
     private void RestartLevel()
     {
+        Debug.Log(SceneManager.GetActiveScene().buildIndex);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

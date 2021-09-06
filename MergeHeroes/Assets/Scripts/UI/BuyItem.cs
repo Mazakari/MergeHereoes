@@ -30,9 +30,6 @@ public class BuyItem : MonoBehaviour
     void Start()
     {
         _buyItemButton.onClick.AddListener(BuyNewItem);
-
-        UpdateItemsCosts();
-       
     }
 
     private void OnDestroy()

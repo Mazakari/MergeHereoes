@@ -72,7 +72,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
                 ResetItemPosition(itemBeingDragged);
             }
         }
-        Debug.Log("OnDrop");
+        //Debug.Log("OnDrop");
     }
     #endregion
 

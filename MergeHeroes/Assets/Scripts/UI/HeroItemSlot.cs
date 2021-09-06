@@ -92,7 +92,7 @@ public class HeroItemSlot : MonoBehaviour, IDropHandler
                 ResetItemPosition(itemBeingDragged);
             }
         }
-        Debug.Log("OnDrop");
+        //Debug.Log("OnDrop");
     }
     #endregion
 

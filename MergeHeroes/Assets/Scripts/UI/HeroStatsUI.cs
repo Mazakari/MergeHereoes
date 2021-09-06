@@ -6,13 +6,19 @@ using UnityEngine.UI;
 public class HeroStatsUI : MonoBehaviour
 {
     #region VARIABLES
-    [Header("Hero Stats Section")]
-    [SerializeField] private Text _heroDamageText = null;// Текущий урон героя
-    [SerializeField] private Text _heroArmourText = null;// Текущий показатель брони героя
-    [SerializeField] private Text _goldPerKillText = null;// Текущий доход героя за убийство монстра
+    private Text _heroDamageText = null;// Текущий урон героя
+    private Text _heroArmourText = null;// Текущий показатель брони героя
+    private Text _goldPerKillText = null;// Текущий доход героя за убийство монстра
     #endregion
 
     #region UNITY Methods
+    private void Awake()
+    {
+        _heroDamageText = transform.Find("HeroDamageText").GetComponent<Text>();
+        _heroArmourText = transform.Find("HeroArmourText").GetComponent<Text>();
+        _goldPerKillText = transform.Find("GoldPerKillText").GetComponent<Text>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +52,10 @@ public class HeroStatsUI : MonoBehaviour
     /// <param name="goldPerKill">Новый доход героя за убийство монстра</param>
     public void UpdateGoldPerKill(float goldPerKill)
     {
-        _goldPerKillText.text = $"Gold per kill: {goldPerKill:F2}";
+        if (_goldPerKillText != null)
+        {
+            _goldPerKillText.text = $"Gold per kill: {goldPerKill:F2}";
+        }
     }
     #endregion
 
@@ -56,9 +65,9 @@ public class HeroStatsUI : MonoBehaviour
     /// <summary>
     /// Обновляет счетчик золота за убийство монстра
     /// </summary>
-    private void UpdateGoldPerKill()
+    private void SetGoldPerKill()
     {
-        _goldPerKillText.text = $"Gold per kill: {CharactersSpawner.Monster.MonsterGoldPerKill:F2}";
+        _goldPerKillText.text = $"Gold per kill: {CharactersSpawner.Monster.MonsterGoldPerKill:F2}";// TO DO В момент update _goldPerKillText = null
     }
     #endregion
 
@@ -70,7 +79,7 @@ public class HeroStatsUI : MonoBehaviour
     /// <param name="e"></param>
     private void CharactersSpawner_OnMonsterSpawn(object sender, System.EventArgs e)
     {
-        UpdateGoldPerKill();
+        SetGoldPerKill();
     }
     #endregion
 }

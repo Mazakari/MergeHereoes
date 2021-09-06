@@ -80,11 +80,15 @@ public class Monster : MonoBehaviour
 
         for (int i = 0; i < hpBars.Length; i++)
         {
-            if (hpBars[i].transform.Find("MonsterNameText"))
+            if (hpBars[i].gameObject.name == "MonsterHPBar")
             {
                 _monsterHpBar = hpBars[i];
                 _monsterNameText = _monsterHpBar.transform.Find("MonsterNameText").GetComponent<Text>();
                 _monsterHealthStatusText = _monsterHpBar.transform.Find("Fill Area").transform.Find("MonsterHealthStatusText").GetComponent<Text>();
+                return;
+                //Debug.Log($"Monster.SetMonsterHealthBar - _monsterHpBar = {_monsterHpBar}");
+                //Debug.Log($"Monster.SetMonsterHealthBar - _monsterNameText = {_monsterNameText}");
+                //Debug.Log($"Monster.SetMonsterHealthBar - _monsterHealthStatusText = {_monsterHealthStatusText}");
             }
         }
     }
