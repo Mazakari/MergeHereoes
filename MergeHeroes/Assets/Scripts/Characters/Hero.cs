@@ -111,9 +111,6 @@ public class Hero : MonoBehaviour
             diminishedDamage = 0.0f;
         }
 
-        //Debug.Log($"Hero.GetDamage clamped diminishedDamage = {diminishedDamage}");
-        //Debug.Log($"Hero.health = {_health}");
-
         if (_health - diminishedDamage > 0)
         {
             _health -= diminishedDamage;
@@ -126,6 +123,7 @@ public class Hero : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Hero health = {_health}");
             // Герой умер, отправляем событие
             OnHeroDead?.Invoke(this, EventArgs.Empty);
             //Debug.Log($"Hero {gameObject.name} is Dead");

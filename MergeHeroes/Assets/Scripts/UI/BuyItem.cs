@@ -14,7 +14,6 @@ public class BuyItem : MonoBehaviour
     /// </summary>
     public ItemTypes.Items ButtonType { get { return _buttonType; } }
 
-
     private ItemsSpawner _itemsSpawner = null;
 
     #endregion
@@ -27,15 +26,8 @@ public class BuyItem : MonoBehaviour
         _itemsSpawner = FindObjectOfType<ItemsSpawner>();
     }
     // Start is called before the first frame update
-    void Start()
-    {
-        _buyItemButton.onClick.AddListener(BuyNewItem);
-    }
-
-    private void OnDestroy()
-    {
-        _buyItemButton.onClick.RemoveAllListeners();
-    }
+    void Start() => _buyItemButton.onClick.AddListener(BuyNewItem);
+    private void OnDestroy() => _buyItemButton.onClick.RemoveAllListeners();
     #endregion
 
     #region PRIVATE Methods
@@ -187,100 +179,6 @@ public class BuyItem : MonoBehaviour
 
         // Обновить счетчик золота у игрока
         PlayerGoldCounterUI.UpdateGoldCounter();
-    }
-
-    /// <summary>
-    /// Находит меч по заданному тиру и возвращает его. Иначе возвращает null
-    /// </summary>
-    /// <param name="itemTier">Тир меча для поиска</param>
-    /// <returns>Item</returns>
-    private Sword GetSwordByTier(int itemTier)
-    {
-        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Swords.Length; i++)
-        {
-            if (ItemsSpawner.gameSettingsSO.Swords[i].GetComponent<Item>().Tier == itemTier)
-            {
-                return ItemsSpawner.gameSettingsSO.Swords[i].GetComponent<Sword>();
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Находит броню по заданному тиру и возвращает его. Иначе возвращает null
-    /// </summary>
-    /// <param name="itemTier">Тир брони для поиска</param>
-    /// <returns></returns>
-    private Armour GetArmourByTier(int itemTier)
-    {
-        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Armour.Length; i++)
-        {
-            if (ItemsSpawner.gameSettingsSO.Armour[i].GetComponent<Item>().Tier == itemTier)
-            {
-                return ItemsSpawner.gameSettingsSO.Armour[i].GetComponent<Armour>();
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Находит зелье по заданному тиру и возвращает его. Иначе возвращает null
-    /// </summary>
-    /// <param name="itemTier">Тир зелья для поиска</param>
-    /// <returns></returns>
-    private Potion GetPotionByTier(int itemTier)
-    {
-        for (int i = 0; i < ItemsSpawner.gameSettingsSO.Potions.Length; i++)
-        {
-            if (ItemsSpawner.gameSettingsSO.Potions[i].GetComponent<Item>().Tier == itemTier)
-            {
-                return ItemsSpawner.gameSettingsSO.Potions[i].GetComponent<Potion>();
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Обновляет стоимость всех предметов
-    /// </summary>
-    private void UpdateItemsCosts()
-    {
-        UpdateSwordCost();
-        UpdateArmourCost();
-        UpdatePotionCost();
-
-        // Обновить счетчик стоимости зелья в UI
-        ItemCostCounterUI.UpdateItemsCostUI();
-    }
-
-    /// <summary>
-    /// Обновляет стоимость меча
-    /// </summary>
-    private void UpdateSwordCost()
-    {
-        // Обновляем текущую стоимость меча в LevelProgress
-        LevelProgress.CurrentSwordBuyCost = GetSwordByTier(LevelProgress.CurrentSwordTierToBuy).GetComponent<Item>().Cost;
-    }
-
-    /// <summary>
-    /// Обновляет стоимость брони
-    /// </summary>
-    private void UpdateArmourCost()
-    {
-        // Обновляем текущую стоимость брони в LevelProgress
-        LevelProgress.CurrentArmourBuyCost = GetArmourByTier(LevelProgress.CurrentArmourTierToBuy).GetComponent<Item>().Cost;
-    }
-
-    /// <summary>
-    /// Обновляет стоимость зелья
-    /// </summary>
-    private void UpdatePotionCost()
-    {
-        // Обновляем текущую стоимость зелья в LevelProgress
-        LevelProgress.CurrentPotionBuyCost = GetPotionByTier(LevelProgress.CurrentPotionTierToBuy).GetComponent<Item>().Cost;
     }
     #endregion
 }

@@ -168,7 +168,7 @@ public class GameState_UI : MonoBehaviour
     /// </summary>
     private void RestartLevel()
     {
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+        LevelProgress.ResetResources();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -177,6 +177,7 @@ public class GameState_UI : MonoBehaviour
     /// </summary>
     private void LoadMainMenu()
     {
+        LevelProgress.ResetResources();
         SceneManager.LoadScene(0);
     }
 
@@ -186,6 +187,7 @@ public class GameState_UI : MonoBehaviour
     private void LoadLevelMap()
     {
         // TO DO загружаем сцену с выбором уровней
+        LevelProgress.ResetResources();
         LoadMainMenu();
     }
     #endregion
@@ -198,8 +200,7 @@ public class GameState_UI : MonoBehaviour
     /// <param name="e"></param>
     private void Hero_OnHeroDead(object sender, System.EventArgs e)
     {
-        // TO DO разобраться с ошибкой при рестарте и уничтожением компонента текста
-        //ActivateLevelLostPopup();
+        ActivateLevelLostPopup();
     }
     #endregion
 }

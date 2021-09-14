@@ -10,7 +10,7 @@ public class LevelProgress : MonoBehaviour
 
     private IEnumerator _damageCoroutine = null;//  урутина дл€ посто€нного нанесени€ урона монстру
 
-    private static float _currentGoldAmount = 10;
+    private static float _currentGoldAmount = 10f;
     /// <summary>
     /// “екущее количество золота у игрока
     /// </summary>
@@ -86,7 +86,6 @@ public class LevelProgress : MonoBehaviour
     #endregion
 
     #endregion
-
     #region UNITY Methods
     private void Start()
     {
@@ -100,10 +99,18 @@ public class LevelProgress : MonoBehaviour
             StartCoroutine(_damageCoroutine);
         }
     }
+    #endregion
 
-    private void Update()
+    #region PUBLIC Methods
+    /// <summary>
+    /// —брасывает значени€ стоимости предметов и золота игрока до начальных
+    /// </summary>
+    public static void ResetResources()
     {
-        //Debug.Log(_currentSwordBuyCost);
+        _currentGoldAmount = 10f;
+        _currentSwordBuyCost = 1f;
+        _currentArmourBuyCost = 1f;
+        _currentPotionBuyCost = 1f;
     }
     #endregion
 

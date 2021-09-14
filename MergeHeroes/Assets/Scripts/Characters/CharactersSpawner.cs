@@ -39,9 +39,6 @@ public class CharactersSpawner : MonoBehaviour
     #region UNITY Methods
     private void Awake()
     {
-        Debug.Log($"_heroesParent = {_heroesParent.name}");
-        Debug.Log($"_monstersParent = {_monstersParent.name}");
-
         Monster.OnMonsterDead += Monster_OnMonsterDead;
 
         _gameSettingsSO = Resources.Load<GameSettingsSO>("ScriptableObjects/GameSettingsSO");
