@@ -7,13 +7,17 @@ public class PlayerGoldCounterUI : MonoBehaviour
 {
     #region VARIABLES
     private static Text _counterText = null;// Ссылка на компонент текста счетчика
+    private Text _goldPerKillText = null;//Gold per kill text reference
 
     #endregion
 
     #region UNITY Methods
     private void Awake()
     {
-        _counterText = GetComponent<Text>();
+        _counterText = transform.Find("GoldCounterText").GetComponent<Text>();
+        _goldPerKillText = transform.Find("GoldPerKillText").GetComponent<Text>();
+
+        CharactersSpawner.OnMonsterSpawn += CharactersSpawner_OnMonsterSpawn;
     }
 
     // Start is called before the first frame update
@@ -31,6 +35,25 @@ public class PlayerGoldCounterUI : MonoBehaviour
     {
         _counterText.text = $"{LevelProgress.CurrentGoldAmount:F2}";
     }
+    #endregion
+
+    #region PRIVATE Methods
+    /// <summary>
+    /// Обновляет счетчик золота за убийство монстра
+    /// </summary>
+    private void UpdateGoldPerKill(Monster monster)
+    {
+        _goldPerKillText.text = $"Gold per kill: {monster.MonsterGoldPerKill:F2}";
+    }
+    #endregion
+
+    #region EVENTS
+    /// <summary>
+    /// Обновляет счетчик золота за убийство монстра при спавне нового монстра
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CharactersSpawner_OnMonsterSpawn(object sender, Monster e) => UpdateGoldPerKill(e);
     #endregion
 
 }

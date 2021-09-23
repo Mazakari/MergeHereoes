@@ -22,8 +22,6 @@ public class MainMenu_UI : MonoBehaviour
     private Button _previousGameDifficultyButton = null;// Кнопка переключения режима сложности вперед
     private Button _nextGameDifficultyButton = null;// Кнопка переключения режима сложности назад
 
-
-
     #endregion
 
     #region UNITY Methods
@@ -75,7 +73,7 @@ public class MainMenu_UI : MonoBehaviour
         _easyModeGameButton.onClick.AddListener(StartEasyGame);
 
         _normalModeGameButton = _gameModesPopup.transform.Find("GameModesButtons").Find("NormalModeGameButton").GetComponent<Button>();
-        _normalModeGameButton.onClick.AddListener(StartMediumGame);
+        _normalModeGameButton.onClick.AddListener(StartNormalGame);
 
         _hardModeGameButton = _gameModesPopup.transform.Find("GameModesButtons").Find("HardModeGameButton").GetComponent<Button>();
         _hardModeGameButton.onClick.AddListener(StartHardGame);
@@ -184,16 +182,16 @@ public class MainMenu_UI : MonoBehaviour
     /// </summary>
     private void StartEasyGame()
     {
-        // TO DO Загружать + 2, т.к. +1 будет карта с уровнями
+        GameSettingsSO.CurGameMode = GameSettingsSO.GameMode.Easy;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     /// <summary>
     /// Запускает игру в режиме "Средне"
     /// </summary>
-    private void StartMediumGame()
+    private void StartNormalGame()
     {
-        // TO DO Загружать + 2, т.к. +1 будет карта с уровнями
+        GameSettingsSO.CurGameMode = GameSettingsSO.GameMode.Normal;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -202,7 +200,7 @@ public class MainMenu_UI : MonoBehaviour
     /// </summary>
     private void StartHardGame()
     {
-        // TO DO Загружать + 2, т.к. +1 будет карта с уровнями
+        GameSettingsSO.CurGameMode = GameSettingsSO.GameMode.Hard;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -211,7 +209,7 @@ public class MainMenu_UI : MonoBehaviour
     /// </summary>
     private void StartVeryHardGame()
     {
-        // TO DO Загружать + 2, т.к. +1 будет карта с уровнями
+        GameSettingsSO.CurGameMode = GameSettingsSO.GameMode.VeryHard;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

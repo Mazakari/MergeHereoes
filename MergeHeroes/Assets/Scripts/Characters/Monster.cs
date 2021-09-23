@@ -24,7 +24,7 @@ public class Monster : MonoBehaviour
     /// <summary>
     /// Событие вызывается при смерти монстра
     /// </summary>
-    public static event EventHandler OnMonsterDead;
+    public static event EventHandler<Monster> OnMonsterDead;
     #endregion
 
     #region UNITY Methods
@@ -65,7 +65,7 @@ public class Monster : MonoBehaviour
         else
         {
             // Монстр умер, отправляем событие
-            OnMonsterDead?.Invoke(this, EventArgs.Empty);
+            OnMonsterDead?.Invoke(this, this);
         }
     }
     #endregion
@@ -83,8 +83,8 @@ public class Monster : MonoBehaviour
             if (hpBars[i].gameObject.name == "MonsterHPBar")
             {
                 _monsterHpBar = hpBars[i];
-                _monsterNameText = _monsterHpBar.transform.Find("MonsterNameText").GetComponent<Text>();
-                _monsterHealthStatusText = _monsterHpBar.transform.Find("Fill Area").transform.Find("MonsterHealthStatusText").GetComponent<Text>();
+                _monsterNameText = _monsterHpBar.transform.Find("RoomNameText").GetComponent<Text>();
+                _monsterHealthStatusText = _monsterHpBar.transform.Find("Fill Area").transform.Find("RoomHealthText").GetComponent<Text>();
                 return;
                 //Debug.Log($"Monster.SetMonsterHealthBar - _monsterHpBar = {_monsterHpBar}");
                 //Debug.Log($"Monster.SetMonsterHealthBar - _monsterNameText = {_monsterNameText}");

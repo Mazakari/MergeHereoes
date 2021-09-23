@@ -148,7 +148,7 @@ public class Hero : MonoBehaviour
         _heroStatsUI.UpdateHeroDamage(_damage);
 
         // Обновляем GoldPerKill в UI ??????????
-        _heroStatsUI.UpdateGoldPerKill(LevelProgress.GoldPerKill);
+        //_heroStatsUI.UpdateGoldPerKill(LevelProgress.GoldPerKill);
         //Debug.Log("Why change GPK here? TODO");
     }
 

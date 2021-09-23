@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637666969889307085
-    m_Hash: 2071201704
+      ticks: 637678972254567539
+    m_Hash: 1850523934
   m_LockFileStatus:
     m_FilePath: D:/NOCSCAB/Hyper Casual/MergeHereoes/MergeHeroes/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637666969890717186
-    m_Hash: 1535410345
+      ticks: 637678972254567539
+    m_Hash: 1530887235
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:

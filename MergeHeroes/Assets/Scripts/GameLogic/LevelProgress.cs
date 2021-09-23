@@ -10,7 +10,8 @@ public class LevelProgress : MonoBehaviour
 
     private IEnumerator _damageCoroutine = null;//  урутина дл€ посто€нного нанесени€ урона монстру
 
-    private static float _currentGoldAmount = 10f;
+    private static float _currentGoldAmount = 1000f;// TO DO
+
     /// <summary>
     /// “екущее количество золота у игрока
     /// </summary>
@@ -86,6 +87,7 @@ public class LevelProgress : MonoBehaviour
     #endregion
 
     #endregion
+
     #region UNITY Methods
     private void Start()
     {
@@ -124,18 +126,25 @@ public class LevelProgress : MonoBehaviour
     {
         while (true)
         {
-            if (CharactersSpawner.Monster != null)
+            if (CharactersSpawner.Monsters != null && CharactersSpawner.Monsters.Count > 0)
             {
-                // Ќаносим урон монстру
-                CharactersSpawner.Monster.GetDamage(CharactersSpawner.Hero.Damage);
+                // ¬ыбираем произвольного монстра из существующих в волне
+                int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
+
+                // Ќаносим урон этому монстру
+                CharactersSpawner.Monsters[rnd].GetDamage(CharactersSpawner.Hero.Damage);
             }
 
-            if (CharactersSpawner.Hero != null)
+            if (CharactersSpawner.Hero != null && CharactersSpawner.Monsters.Count > 0)
             {
-                // Ќаносим урон герою
-                CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monster.MonsterDamage);
+                // ¬ыбираем произвольного монстра из существующих в волне
+                int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
+
+                // Ќаносим урон герою этим монстром
+                CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monsters[rnd].MonsterDamage);
             }
-            yield return new WaitForSeconds(_heroAttackDelay); 
+
+            yield return new WaitForSeconds(_heroAttackDelay);
         }
 
         yield return null;

@@ -123,8 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89483b5e884629841bbb64ed54ff89e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 0.2
-  _goldPerKill: 0.1
+  _health: 10000
 --- !u!95 &206251581
 Animator:
   serializedVersion: 3

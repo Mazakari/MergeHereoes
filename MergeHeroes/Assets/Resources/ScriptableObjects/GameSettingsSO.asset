@@ -49,3 +49,38 @@ MonoBehaviour:
   - {fileID: 4169384790608871786, guid: e7df98d91512a934fb41f71e1c03a8e5, type: 3}
   - {fileID: 8196150245991738023, guid: e18252702370d27418457b6d6b7dc5da, type: 3}
   - {fileID: 5169899780972456355, guid: bb56321876db8ba4e884a365b5d99071, type: 3}
+  _roomSprites:
+  - {fileID: 21300000, guid: 6d7329da3c4513e429b7f58d7cf5c348, type: 3}
+  - {fileID: 21300000, guid: 36c4b507fb69e8c4ca0e455503c14d95, type: 3}
+  - {fileID: 21300000, guid: 718e7617eada0c24dad5164d848b339f, type: 3}
+  - {fileID: 21300000, guid: a7d35de0b42375640b5104ab799364aa, type: 3}
+  _roomNames:
+  - Lair
+  - Swamp
+  - Dungeon
+  - Ruins
+  - Den
+  - Hole
+  - Woods
+  - Plains
+  - Dessert
+  - Jungle
+  _roomButtonSprites:
+  - {fileID: 21300000, guid: eb0ae6038f3b4174489866eb0a930497, type: 3}
+  - {fileID: 21300000, guid: 765564c4fbaaa9345a74cca7b6efc7e3, type: 3}
+  - {fileID: 21300000, guid: 59283396a0c731248b2ab128468f6518, type: 3}
+  - {fileID: 21300000, guid: e93d8b020b5619d4caee0ce5d9f4a1f1, type: 3}
+  - {fileID: 21300000, guid: 466f2231cf7328f429460b4ab650eb19, type: 3}
+  - {fileID: 21300000, guid: cbc6d6ce2cb83744592a40e8584ee5fd, type: 3}
+  - {fileID: 21300000, guid: fd2e2168f7e3c3a4d8b2bf9c21e92467, type: 3}
+  - {fileID: 21300000, guid: d8a64d92c955cb04f91c9b8735677abe, type: 3}
+  - {fileID: 21300000, guid: 9852daf35bf2a7c4dad856e759706c7c, type: 3}
+  - {fileID: 21300000, guid: af7c4ad603c3d2a41b40bb344dce9bad, type: 3}
+  - {fileID: 21300000, guid: f0614572a6828264e85450e1f417f800, type: 3}
+  - {fileID: 21300000, guid: 541eb55870c8f1041bfed29d3263a431, type: 3}
+  - {fileID: 21300000, guid: 573197d8781e5c9458290d13d62ec6e1, type: 3}
+  _roomModifiers:
+  - + 10% Monsters Damage
+  - + 10% Monsters Armour
+  - + 10% MonstersHealth
+  - '- 10% Gold from Bosses'
