@@ -1,38 +1,39 @@
 // Roman Baranov 08.09.2021
 
+using System;
 using UnityEngine;
 public class Level : MonoBehaviour
 {
     #region VARIABLES
-    private static int _maxRooms = 4;
+    private static int _maxRooms = 0;
     /// <summary>
-    /// Максимальное количество комнат на уровне
+    /// Max rooms on level
     /// </summary>
     public static int MaxRooms { get { return _maxRooms; } }
 
-    private static int _maxMosterWavePerRoom = 3;
+    private static int _maxMosterWavePerRoom = 0;
     /// <summary>
-    /// Максимальное количество волн монстров в комнате
+    /// Max monster waves per room
     /// </summary>
     public static int MaxMonsterWavePerRoom { get { return _maxMosterWavePerRoom; } }
 
-    private static int _maxMonstersPerWave = 3;
+    private static int _maxMonstersPerWave = 0;
     /// <summary>
-    /// Максимальное количество монстров в волне
+    /// Max monsters in single wave
     /// </summary>
     public static int MaxMonstersPerWave { get { return _maxMonstersPerWave; } }
 
-    private static int _bossesCount = 1;// Количество боссов на уровне
+    private static int _bossesCount = 0;// Bosses amount on level
 
     private static Room[] _rooms = null;
     /// <summary>
-    /// Комнаты в этом уровне
+    /// Level rooms collection
     /// </summary>
     public static Room[] Rooms { get { return _rooms; } }
 
     private static Room _currentRoom = null;
     /// <summary>
-    /// Ссылка на текущую комнату уровня
+    /// Current room reference
     /// </summary>
     public static Room CurrentRoom { get { return _currentRoom; } }
     #endregion
@@ -42,37 +43,38 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        GetGameModeSettings();
+        SetGameModeSettings();
     }
 
     private void Start()
     {
         LoadFirstRoom();
+
+        // Update new room UI
+        Room_UI.UpdateRoomInfo();
     }
 
     #endregion
 
     #region PUBLUC Methods
     /// <summary>
-    /// Добавляет новую комнату в первый свободный слот существующей коллекции комнат на уровне
+    /// Adds a new room on first free room index in Rooms collection
     /// </summary>
-    /// <param name="roomModificator">Модификатор комнаты</param>
+    /// <param name="roomModificator">Room modifier</param>
     public static void AddRoom(RoomModificator.Modificator roomModificator)
     {
         int freeRoomIndex = FindEmptyRoomIndex();
         if (freeRoomIndex >= 0 && freeRoomIndex < _maxRooms)
         {
             //Выбираем произвольное название для новой комнаты
-            int rnd = Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length);
+            int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
 
-            _rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, 100f * freeRoomIndex + 1, 3, ItemsSpawner.gameSettingsSO.RoomSprites[freeRoomIndex], roomModificator);
+            int rndSprite = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomSprites.Length - 1);
+
+            _rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, 100f * freeRoomIndex + 1, 3, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
 
             // Сохраняем ссылку на текущую комнату
             _currentRoom = _rooms[freeRoomIndex];
-
-            //// Обновляем информацию о новой комнате в UI
-            //LevelInfo_UI.UpdateRoomNameText(_rooms[freeRoomIndex].RoomName);
-            //LevelInfo_UI.UpdateRoomInfoText();
         }
     }
     #endregion
@@ -83,22 +85,20 @@ public class Level : MonoBehaviour
     /// </summary>
     private void LoadFirstRoom()
     {
-        _rooms = new Room[_maxRooms];
-
         //Выбираем произвольное название для новой комнаты
-        int rnd = Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length);
+        int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length);
 
-        _rooms[0] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], 0, 100f, 3, ItemsSpawner.gameSettingsSO.RoomSprites[0], RoomModificator.Modificator.None);
+        _rooms[0] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], 1, 100f, 3, ItemsSpawner.gameSettingsSO.RoomSprites[0], RoomModificator.Modificator.None);
 
         // Сохраняем ссылку на текущую комнату
         _currentRoom = _rooms[0];
     }
 
     /// <summary>
-    /// Проверяет массив с комнатами и возвращает индекс свободной ячейки.
-    /// Если все ячейки заняты, возращает 0
+    /// Return first empty room index.
+    /// Return -1 no free indexes found.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>int</returns>
     private static int FindEmptyRoomIndex()
     {
         for (int i = 0; i < _rooms.Length; i++)
@@ -113,26 +113,26 @@ public class Level : MonoBehaviour
     }
 
     /// <summary>
-    /// Загружает настройки уровня и комнат в зависимости от выбранной сложности
+    /// Set level settings in accordance with selected game mode
     /// </summary>
-    private void GetGameModeSettings()
+    private void SetGameModeSettings()
     {
         switch (GameSettingsSO.CurGameMode)
         {
             case GameSettingsSO.GameMode.Easy:
-                SetMode(4, 3, 3, 4 / 4);
+                GetMode(4, 3, 3, 4 / 4);
                 break;
 
             case GameSettingsSO.GameMode.Normal:
-                SetMode(8, 3, 3, 8 / 4);
+                GetMode(8, 3, 3, 8 / 4);
                 break;
 
             case GameSettingsSO.GameMode.Hard:
-                SetMode(12, 3, 3, 12 / 4);
+                GetMode(12, 3, 3, 12 / 4);
                 break;
 
             case GameSettingsSO.GameMode.VeryHard:
-                SetMode(16, 3, 3, 16 / 4);
+                GetMode(16, 3, 3, 16 / 4);
                 break;
 
             default:
@@ -142,14 +142,16 @@ public class Level : MonoBehaviour
     }
 
     /// <summary>
-    /// Сохраняет настройки для уровня сложности
+    /// Get game mode settings
     /// </summary>
-    private void SetMode(int maxRooms, int maxMosterWavePerRoom, int maxMonstersPerWave, int bossesCount)
+    private void GetMode(int maxRooms, int maxMosterWavePerRoom, int maxMonstersPerWave, int bossesCount)
     {
         _maxRooms = maxRooms;
         _maxMosterWavePerRoom = maxMosterWavePerRoom;
         _maxMonstersPerWave = maxMonstersPerWave;
         _bossesCount = bossesCount;
+
+        _rooms = new Room[_maxRooms];
     }
     #endregion
 }

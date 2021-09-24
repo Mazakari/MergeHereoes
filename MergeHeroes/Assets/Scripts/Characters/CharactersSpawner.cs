@@ -7,38 +7,38 @@ using UnityEngine;
 public class CharactersSpawner : MonoBehaviour
 {
     #region VARIABLES
-    private GameSettingsSO _gameSettingsSO = null;// Ссылка на SO для получения префабов героев и монстров
-    private HeroStatsUI _heroStatsUI = null;// Ссылка на скрипт с отображением статистики героя в UI для обновления значений
+    private GameSettingsSO _gameSettingsSO = null;
+    private HeroStatsUI _heroStatsUI = null;
 
-    private Vector2 _camWorldPos;// Левая нижняя точка камеры в мировых координатах
+    private Vector2 _camWorldPos;// Left bottom camera point in world coordinates
 
-    private Vector2[] _monsterSpawnPos;// Точки спавна монстров
-    private Vector2 _heroSpawnPos;// Точка спавна героя
+    private Vector2[] _monsterSpawnPos;
+    private Vector2 _heroSpawnPos;
 
-    [SerializeField] private Transform _heroesParent = null;// Родительский объект для спавна героев
-    [SerializeField] private Transform _monstersParent = null;// Родительский объект для спавна монстров
+    [SerializeField] private Transform _heroesParent = null;
+    [SerializeField] private Transform _monstersParent = null;
 
     private static List<Monster> _monsters = null;
     /// <summary>
-    /// Монстр, находящийся сейчас на сцене
+    /// Active monsters collection
     /// </summary>
     public static List<Monster> Monsters { get { return _monsters; } set { _monsters = value; } }
 
     private static Hero _hero = null;
     /// <summary>
-    /// Герой, находящийся сейчас на сцене
+    /// Active hero
     /// </summary>
     public static Hero Hero { get { return _hero; } set { _hero = value; } }
 
-    private int _monsterIndexToSpawn = 0;// Индекс монстра в общем массиве монстров для спавна
+    private int _monsterIndexToSpawn = 0;// Current monster index to spawn from total monsters prefabs collection
 
     /// <summary>
-    /// Событие вызывается в момент спавна монстра
+    /// Callback on monster spawn
     /// </summary>
     public static event EventHandler<Monster> OnMonsterSpawn;
 
     /// <summary>
-    /// Событие вызывается, когда все волны монстров в комнате были зачищены
+    /// Callback on all monsters in room were killed
     /// </summary>
     public static event EventHandler OnRoomCleared;
     #endregion
@@ -52,16 +52,13 @@ public class CharactersSpawner : MonoBehaviour
         _heroStatsUI = FindObjectOfType<HeroStatsUI>();
 
         _camWorldPos = Camera.main.ViewportToWorldPoint(Camera.main.transform.position);
-        SetSpawnPoints();
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        Monster.OnMonsterDead += Monster_OnMonsterDead;
-
-        _camWorldPos = Camera.main.ViewportToWorldPoint(Camera.main.transform.position);
-
+        SetSpawnPoints();
         SpawnMonsters();
         SpawnHero();
 
@@ -72,7 +69,7 @@ public class CharactersSpawner : MonoBehaviour
 
     #region PRIVATE Methods
     /// <summary>
-    /// Вычисляет точки спавна для героя и монстров
+    /// Set monster wave and hero spawn points
     /// </summary>
     private void SetSpawnPoints()
     {
@@ -91,7 +88,7 @@ public class CharactersSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Спавнит произвольного героя в родительском объекте героев
+    /// Spawn hero in heroes parent object
     /// </summary>
     private void SpawnHero()
     {
@@ -100,15 +97,14 @@ public class CharactersSpawner : MonoBehaviour
 
         GameObject heroClone = Instantiate(hero, _heroSpawnPos, Quaternion.identity, _heroesParent);
 
-        // Добавляем заспавленного героя в активные на сцене
+        // Add spawned hero reference
         _hero = heroClone.GetComponent<Hero>();
-
     }
     #endregion
 
     #region PUBLIC Methods
     /// <summary>
-    /// Спасвнит монстров в волне
+    /// Spawn a monsters wave 
     /// </summary>
     public void SpawnMonsters()
     {
@@ -119,27 +115,24 @@ public class CharactersSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Спавнит произвольного монстра в родительском объекте монстров
+    /// Spawn monster in monsters parent object
     /// </summary>
     public void SpawnMonster()
     {
-        // Выбираем позицию монстра для спавна
-        Vector2 spawnPos = new Vector2(-_camWorldPos.x / 2, 0);
-
-        // Выбираем монстра для спавна
+        // Get monster to spawn
         GameObject monster = _gameSettingsSO.Monsters[_monsterIndexToSpawn];
-        
-        // Спавним монстра
+
+        // Spawn monster
         GameObject monsterClone = Instantiate(monster, _monsterSpawnPos[_monsters.Count], Quaternion.identity, _monstersParent);
 
-        // Проверяем можно ли инкрементировать индекс монстра
+        // Check index out of range 
         if (_monsterIndexToSpawn + 1 < _gameSettingsSO.Monsters.Length)
         {
-            // Инкрементируем индекс монстра для следующего спавна
+            // Increment monster index for the next spawn
             _monsterIndexToSpawn++;
         }
 
-        // Добавляем заспавленного монстра в активные на сцене
+        // Add spawned monster to current monster wave collection
         _monsters.Add(monsterClone.GetComponent<Monster>());
 
         // Обновляем показатель GoldPerKill в LevelProgress
@@ -148,7 +141,7 @@ public class CharactersSpawner : MonoBehaviour
         //Debug.Log($"SpawnMonster - Monster {_monster} spawned!");
 
         // Подписываемся на событие смерти монстра
-        //monsterClone.GetComponent<Monster>().OnMonsterDead += Monster_OnMonsterDead;
+        monsterClone.GetComponent<Monster>().OnMonsterDead += Monster_OnMonsterDead;
 
         // Отправляем событие о спавне монстра
         OnMonsterSpawn?.Invoke(this, monsterClone.GetComponent<Monster>());
@@ -156,6 +149,11 @@ public class CharactersSpawner : MonoBehaviour
     #endregion
 
     #region EVENTS
+    /// <summary>
+    /// Handle monster spawn and room loading on monster dead
+    /// </summary>
+    /// <param name="sender">Callback sender</param>
+    /// <param name="e">Additional callback agruments</param>
     private void Monster_OnMonsterDead(object sender, Monster e)
     {
         // Начисляем игроку золото
@@ -186,8 +184,8 @@ public class CharactersSpawner : MonoBehaviour
             // Спавним новую волну монстров
             SpawnMonsters();
 
-            // Обновляем информацию о комнате в UI
-            //LevelInfo_UI.UpdateRoomInfoText();
+            // Update monster wave number in UI
+            Room_UI.UpdateMonsterWaveInfo();
         }
         else if (Level.CurrentRoom.CurMonstersInWave == 0 &&
                  Level.CurrentRoom.CurWaveNumber >= Level.MaxMonsterWavePerRoom)

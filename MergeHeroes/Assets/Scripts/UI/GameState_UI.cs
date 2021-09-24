@@ -307,6 +307,7 @@ public class GameState_UI : MonoBehaviour
     private void LoadNextRoom()
     {
         Level.AddRoom(RoomModificator.Modificator.None);
+        Room_UI.UpdateRoomInfo();
         SwitchRoomClearedPopup(false);
     }
     #endregion

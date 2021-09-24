@@ -33,7 +33,10 @@ public class PlayerGoldCounterUI : MonoBehaviour
     /// </summary>
     public static void UpdateGoldCounter()
     {
-        _counterText.text = $"{LevelProgress.CurrentGoldAmount:F2}";
+        if (_counterText != null)
+        {
+            _counterText.text = $"{LevelProgress.CurrentGoldAmount:F2}";
+        }
     }
     #endregion
 
@@ -43,7 +46,10 @@ public class PlayerGoldCounterUI : MonoBehaviour
     /// </summary>
     private void UpdateGoldPerKill(Monster monster)
     {
-        _goldPerKillText.text = $"Gold per kill: {monster.MonsterGoldPerKill:F2}";
+        if (_goldPerKillText != null)
+        {
+            _goldPerKillText.text = $"Gold per kill: {monster.MonsterGoldPerKill:F2}";
+        }
     }
     #endregion
 

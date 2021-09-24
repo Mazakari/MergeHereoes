@@ -41,20 +41,22 @@ public class Room
     /// </summary>
     public int CurMonstersInWave { get { return _curMonstersInWave; } set { _curMonstersInWave = value; } }
 
-    private Sprite _roomBackgroundSprite = null;// Спрайт фона комнаты
+    private Sprite _roomBackgroundSprite = null;// Room background sprite
+
+    
     #endregion
 
     #region CONSTRUCTOR
     /// <summary>
-    /// Конструктор комнаты
+    /// Room constructor
     /// </summary>
-    /// <param name="roomName">Название комнаты</param>
-    /// <param name="curRoomNumber">Текущий номер комнаты</param>
-    /// <param name="roomHealth">Пул здоровья для монстров в комнате</param>
-    /// <param name="curMonsterWave">Текущее количество волн монстров в комнате</param>
-    /// <param name="curMonstersInWave">Текущее количество монстров в текущей волне</param>
-    /// <param name="roomBackgroundSprite">Спрайт фона комнаты</param>
-    /// <param name="roomModificator">Модификатор комнаты</param>
+    /// <param name="roomName">Room name</param>
+    /// <param name="curRoomNumber">Current room number</param>
+    /// <param name="roomHealth">Room health pool for monsters</param>
+    /// <param name="curMonsterWave">Current monster wave in room</param>
+    /// <param name="curMonstersInWave">Current monsterd count in current wave</param>
+    /// <param name="roomBackgroundSprite">Room background sprite</param>
+    /// <param name="roomModificator">Room modifier</param>
     public Room(string roomName, int curRoomNumber, float roomHealth, int curMonstersInWave, Sprite roomBackgroundSprite, RoomModificator.Modificator roomModificator)
     {
         _roomName = roomName;
