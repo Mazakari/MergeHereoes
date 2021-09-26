@@ -59,7 +59,6 @@ public class CharactersSpawner : MonoBehaviour
     void Start()
     {
         SetSpawnPoints();
-        SpawnMonsters();
         SpawnHero();
 
         _heroStatsUI.UpdateHeroArmour(_hero.Armour);
@@ -194,7 +193,6 @@ public class CharactersSpawner : MonoBehaviour
             OnRoomCleared?.Invoke(this, EventArgs.Empty);
 
             _monsterIndexToSpawn = 0;
-            SpawnMonsters();
         }
     }
     #endregion

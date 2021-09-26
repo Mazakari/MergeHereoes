@@ -6,20 +6,20 @@ using UnityEngine;
 public class LevelProgress : MonoBehaviour
 {
     #region VARIABLES
-    private float _heroAttackDelay = 1.0f;// «адержка урона между атаки геро€
+    private float _attackDelay = 1.0f;
 
-    private IEnumerator _damageCoroutine = null;//  урутина дл€ посто€нного нанесени€ урона монстру
+    private IEnumerator _damageCoroutine = null;
 
     private static float _currentGoldAmount = 1000f;// TO DO
 
     /// <summary>
-    /// “екущее количество золота у игрока
+    /// Player current gold amount
     /// </summary>
     public static float CurrentGoldAmount { get { return _currentGoldAmount; } set { _currentGoldAmount = value; } }
 
     private static float _goldPerKill = 1;
     /// <summary>
-    /// “екущее количество золота, начисл€емого за убийство монстра
+    /// Current gold per kill
     /// </summary>
     public static float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
 
@@ -119,32 +119,32 @@ public class LevelProgress : MonoBehaviour
     #region PRIVATE Methods
 
     /// <summary>
-    ///  урутина запускает посто€нный урон по монстрам
+    /// Damage coroutine
     /// </summary>
-    /// <returns></returns>
+    /// <returns>IEnumerator</returns>
     private IEnumerator DamageLoop()
     {
         while (true)
         {
+            // Choose random monster from the wave
+            int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
+
             if (CharactersSpawner.Monsters != null && CharactersSpawner.Monsters.Count > 0)
             {
-                // ¬ыбираем произвольного монстра из существующих в волне
-                int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
-
-                // Ќаносим урон этому монстру
+                // Damage chosen monster
                 CharactersSpawner.Monsters[rnd].GetDamage(CharactersSpawner.Hero.Damage);
+
+                // Decrease room health
+                Room_UI.GetRoomHealthDamage(CharactersSpawner.Hero.Damage);
             }
 
             if (CharactersSpawner.Hero != null && CharactersSpawner.Monsters.Count > 0)
             {
-                // ¬ыбираем произвольного монстра из существующих в волне
-                int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
-
                 // Ќаносим урон герою этим монстром
                 CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monsters[rnd].MonsterDamage);
             }
 
-            yield return new WaitForSeconds(_heroAttackDelay);
+            yield return new WaitForSeconds(_attackDelay);
         }
 
         yield return null;

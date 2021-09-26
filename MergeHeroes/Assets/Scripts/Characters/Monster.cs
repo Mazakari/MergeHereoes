@@ -29,16 +29,7 @@ public class Monster : MonoBehaviour
     #endregion
 
     #region UNITY Methods
-
-    private void Awake()
-    {
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
+    void Start() => SetHealth();
     #endregion
 
     #region PUBLIC Methods
@@ -51,23 +42,20 @@ public class Monster : MonoBehaviour
         if (_monsterHp - damage > 0)
         {
             _monsterHp -= damage;
-
-            //Обновляем хп бар монстра
-            //_monsterHpBar.value -= damage;
-
-            // Обновляем статус здоровья монстра
-            //_monsterHealthStatusText.text = $"{_monsterHpBar.value} / {_monsterHpBar.maxValue}";
         }
         else
         {
-            // Монстр умер, отправляем событие
+            // Monster died send callback
             OnMonsterDead?.Invoke(this, this);
         }
     }
     #endregion
 
     #region PRIVATE Methods
-   
+    private void SetHealth()
+    {
+        _monsterHp = Level.PerMonsterHealth;
+    }
     #endregion
 }
 
