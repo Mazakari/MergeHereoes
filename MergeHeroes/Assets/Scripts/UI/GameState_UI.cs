@@ -20,7 +20,7 @@ public class GameState_UI : MonoBehaviour
     private Button _mainMenuButton = null;//  нопка возврата в главное меню
     private Button _backToMapButton = null;//  нопка возврата на карту с выбором уровней
 
-    //
+    // Room choose buttons
     private Button _leftRoomButton = null;//  нопка загрузки левой комнаты в попапе выбора следующей комнаты
     private Button _rightRoomButton = null;//  нопка загрузки правой комнаты в попапе выбора следующей комнаты
     #endregion

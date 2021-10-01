@@ -2,12 +2,19 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
     #region VARIABLES
+
+    [SerializeField] private bool _isBoss = false;// Is this monstera boss
+
     private float _monsterHp = 2f;// Base monster HP
+
+    /// <summary>
+    /// DEBUG Cur monster health
+    /// </summary>
+    public float MonsterHP { get { return _monsterHp; } }
 
     [SerializeField] private float _monsterDamage = 5f;
 
@@ -48,13 +55,27 @@ public class Monster : MonoBehaviour
             // Monster died send callback
             OnMonsterDead?.Invoke(this, this);
         }
+        //Debug.Log($"GetDamage: Monster = {gameObject.name}");
+        //Debug.Log($"GetDamage: _monsterHp = {_monsterHp}");
     }
     #endregion
 
     #region PRIVATE Methods
+    /// <summary>
+    /// Set monster health
+    /// </summary>
     private void SetHealth()
     {
-        _monsterHp = Level.PerMonsterHealth;
+        if (_isBoss)
+        {
+            _monsterHp = Level.MaxBossHealth;
+        }
+        else
+        {
+            _monsterHp = Level.PerMonsterHealth;
+            //Debug.Log($"SetHealth: _monsterHp = {_monsterHp}");
+        }
+
     }
     #endregion
 }

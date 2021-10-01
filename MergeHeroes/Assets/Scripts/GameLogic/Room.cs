@@ -23,17 +23,17 @@ public class Room
     /// </summary>
     public int CurRoomNumber { get { return _curRoomNumber; } }
 
-    private float _maxRoomHealth = 100f;
+    private float _maxRoomWaveHealth = 100f;
     /// <summary>
-    /// Max room health pool
+    /// Max room wave health pool
     /// </summary>
-    public float MaxRoomHealth { get { return _maxRoomHealth; } }
+    public float MaxRoomWaveHealth { get { return _maxRoomWaveHealth; } }
 
-    private float _curRoomHealth;
+    private float _curRoomWaveHealth;
     /// <summary>
-    /// Current room health pool
+    /// Current room health health pool
     /// </summary>
-    public float CurRoomHealth { get { return _curRoomHealth; } set { _curRoomHealth = value; } }
+    public float CurRoomWaveHealth { get { return _curRoomWaveHealth; } set { _curRoomWaveHealth = value; } }
 
     private int _curWaveNumber = 0;
     /// <summary>
@@ -58,18 +58,18 @@ public class Room
     /// </summary>
     /// <param name="roomName">Room name</param>
     /// <param name="curRoomNumber">Current room number</param>
-    /// <param name="maxRoomHealth">Room health pool for monsters</param>
+    /// <param name="maxRoomWaveHealth">Room wave health pool for monsters</param>
     /// <param name="curMonsterWave">Current monster wave in room</param>
     /// <param name="curMonstersInWave">Current monsterd count in current wave</param>
     /// <param name="roomBackgroundSprite">Room background sprite</param>
     /// <param name="roomModificator">Room modifier</param>
-    public Room(string roomName, int curRoomNumber, float maxRoomHealth, int curMonstersInWave, Sprite roomBackgroundSprite, RoomModificator.Modificator roomModificator)
+    public Room(string roomName, int curRoomNumber, float maxRoomWaveHealth, int curMonstersInWave, Sprite roomBackgroundSprite, RoomModificator.Modificator roomModificator)
     {
         _roomName = roomName;
         _curRoomNumber = curRoomNumber;
 
-        _maxRoomHealth = maxRoomHealth;
-        _curRoomHealth = _maxRoomHealth;
+        _maxRoomWaveHealth = maxRoomWaveHealth;
+        _curRoomWaveHealth = _maxRoomWaveHealth;
 
         _curWaveNumber = 1;
         _curMonstersInWave = curMonstersInWave;

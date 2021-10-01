@@ -48,6 +48,15 @@ public class GameSettingsSO : ScriptableObject
     /// </summary>
     public GameObject[] Monsters { get { return _monsters; } }
 
+
+    [Header("Коллекция префабов боссов доступных в игре")]
+    [SerializeField] private GameObject[] _bosses = null;
+
+    /// <summary>
+    /// Коллекция префабов монстров доступных в игре
+    /// </summary>
+    public GameObject[] Bosses { get { return _bosses; } }
+
     /// <summary>
     /// Режимы сложности игры
     /// </summary>

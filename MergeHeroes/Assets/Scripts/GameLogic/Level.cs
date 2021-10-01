@@ -5,12 +5,31 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     #region VARIABLES
+    #region ROOM
+    private static int _bossRoomInterval = 4;
+
     private static int _maxRooms = 0;
     /// <summary>
     /// Max rooms on level
     /// </summary>
     public static int MaxRooms { get { return _maxRooms; } }
 
+    private static Room[] _rooms = null;
+    /// <summary>
+    /// Level rooms collection
+    /// </summary>
+    public static Room[] Rooms { get { return _rooms; } }
+
+    private static Room _currentRoom = null;
+    /// <summary>
+    /// Current room reference
+    /// </summary>
+    public static Room CurrentRoom { get { return _currentRoom; } }
+
+    private static int[] _bossRooms = null;
+    #endregion
+
+    #region MONSTERS
     private static int _maxMosterWavePerRoom = 0;
     /// <summary>
     /// Max monster waves per room
@@ -32,24 +51,29 @@ public class Level : MonoBehaviour
 
     private static int _bossesCount = 0;// Bosses amount on level
 
-    private static Room[] _rooms = null;
+    private static int _maxBossWavePerRoom = 1; 
     /// <summary>
-    /// Level rooms collection
+    /// Max boss waves per room
     /// </summary>
-    public static Room[] Rooms { get { return _rooms; } }
+    public static int MaxBossWavePerRoom { get { return _maxBossWavePerRoom; } }
 
-    private static Room _currentRoom = null;
+    private static float _maxBossHealth = 0f;
     /// <summary>
-    /// Current room reference
+    /// Max boss health
     /// </summary>
-    public static Room CurrentRoom { get { return _currentRoom; } }
+    public static float MaxBossHealth { get { return _maxBossHealth; } }
+
+    private static bool _bossRoomActive = false;
+    /// <summary>
+    /// Is boss room active right now
+    /// </summary>
+    public static bool BossRoomActive { get { return _bossRoomActive; } }
+    #endregion
 
     private static CharactersSpawner _characterSpawner = null;
     #endregion
 
     #region UNITY Methods
-
-    // Start is called before the first frame update
     private void Awake()
     {
         SetGameModeSettings();
@@ -59,7 +83,8 @@ public class Level : MonoBehaviour
     private void Start()
     {
         LoadFirstRoom();
-        
+        FilterBossRooms(_bossRoomInterval);
+
         // Update new room UI
         Room_UI.UpdateRoomInfo();
     }
@@ -76,27 +101,101 @@ public class Level : MonoBehaviour
         int freeRoomIndex = FindEmptyRoomIndex();
         if (freeRoomIndex >= 0 && freeRoomIndex < _maxRooms)
         {
-            //Choose random room name
-            int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
+            ////Choose random room name
+            //int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
 
-            int rndSprite = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomSprites.Length - 1);
+            //int rndSprite = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomSprites.Length - 1);
 
-            _rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, 100f * freeRoomIndex + 1, 3, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
+            //_rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, _currentRoom.MaxRoomWaveHealth * (_currentRoom.CurRoomNumber + 1), 3, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
 
-            // Cache room reference
-            _currentRoom = _rooms[freeRoomIndex];
+            //// Cache room reference
+            //_currentRoom = _rooms[freeRoomIndex];
 
-            //Debug.Log($"AddRoom: _currentRoom.MaxRoomHealth {_currentRoom.MaxRoomHealth}");
-            //Debug.Log($"AddRoom: _currentRoom.CurRoomHealth {_currentRoom.CurRoomHealth}");
+            //// Set monster health
+            //SetMonsterHealth();
 
-            // Set monster health
-            SetMonsterHealth();
+            ////Spawn first monsters wave
+            //_characterSpawner.SpawnMonsters();
 
-            //Spawn first monsters wave
-            _characterSpawner.SpawnMonsters();
+            //// Set room health pool
+            //Room_UI.SetRoomWaveHealth(_currentRoom.MaxRoomWaveHealth);
 
-            // Set room health pool
-            Room_UI.SetRoomHealth(_currentRoom.MaxRoomHealth);
+
+            // Check if next room is a boss room
+            if (IsBossRoom(freeRoomIndex))
+            {
+                // Activate boss room flag TEST
+                _bossRoomActive = true;
+
+                //Choose random room name
+                int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
+
+                int rndSprite = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomSprites.Length - 1);
+
+                _rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, _currentRoom.MaxRoomWaveHealth * (_currentRoom.CurRoomNumber + 1), 1, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
+
+                // Cache room reference
+                _currentRoom = _rooms[freeRoomIndex];
+
+                // Set room wave to maximum TEST
+                _currentRoom.CurWaveNumber = _maxMosterWavePerRoom;
+                Debug.Log($"AddRoom: _currentRoom.CurWaveNumber = {_currentRoom.CurWaveNumber}");
+
+                // Update wave counter
+                Room_UI.UpdateMonsterWaveInfo();
+
+                // Set boss health
+                SetBossHealth();
+
+                //Spawn first monsters wave
+                _characterSpawner.SpawnBoss();
+
+                // Set room health pool
+                Room_UI.SetRoomWaveHealth(_currentRoom.MaxRoomWaveHealth);
+
+                Debug.Log("---BOSS!!!---");
+            }
+            else
+            {
+                // Seactivate boss room flag TEST
+                _bossRoomActive = false;
+
+                //Choose random room name
+                int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
+
+                int rndSprite = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomSprites.Length - 1);
+
+                _rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, _currentRoom.MaxRoomWaveHealth * (_currentRoom.CurRoomNumber + 1), 3, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
+
+                // Cache room reference
+                _currentRoom = _rooms[freeRoomIndex];
+
+                // Set monster health
+                SetMonsterHealth();
+
+                //Spawn first monsters wave
+                _characterSpawner.SpawnMonsters();
+
+                // Set room health pool
+                Room_UI.SetRoomWaveHealth(_currentRoom.MaxRoomWaveHealth);
+            }
+        }
+    }
+
+    /// <summary>
+    /// DEBUG Damage room wave health by given amount
+    /// </summary>
+    /// <param name="incomingRoomWaveDamage"></param>
+    public static void DamageRoomWaveHealth(float incomingRoomWaveDamage)
+    {
+        if (_currentRoom.CurRoomWaveHealth > 0.0001f)
+        {
+            _currentRoom.CurRoomWaveHealth -= incomingRoomWaveDamage;
+        }
+        else
+        {
+            _currentRoom.CurRoomWaveHealth = 0f;
+            Debug.Log($"DamageRoomWaveHealth: _currentRoom.CurRoomWaveHealth = {_currentRoom.CurRoomWaveHealth}");
         }
     }
     #endregion
@@ -110,13 +209,10 @@ public class Level : MonoBehaviour
         //Choose random room name
         int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length);
 
-        _rooms[0] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], 1, 100f, 3, ItemsSpawner.gameSettingsSO.RoomSprites[0], RoomModificator.Modificator.None);
+        _rooms[0] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], 1, 10f, 3, ItemsSpawner.gameSettingsSO.RoomSprites[0], RoomModificator.Modificator.None);
 
         // Cache room reference
         _currentRoom = _rooms[0];
-
-        //Debug.Log($"LoadFirstRoom: _currentRoom.MaxRoomHealth {_currentRoom.MaxRoomHealth}");
-        //Debug.Log($"LoadFirstRoom: _currentRoom.CurRoomHealth {_currentRoom.CurRoomHealth}");
 
         // Set monster health
         SetMonsterHealth();
@@ -125,7 +221,7 @@ public class Level : MonoBehaviour
         _characterSpawner.SpawnMonsters();
 
         // Set room health pool
-        Room_UI.SetRoomHealth(_currentRoom.MaxRoomHealth);
+        Room_UI.SetRoomWaveHealth(_currentRoom.MaxRoomWaveHealth);
     }
 
     /// <summary>
@@ -193,11 +289,59 @@ public class Level : MonoBehaviour
     /// </summary>
     private static void SetMonsterHealth()
     {
-        int totalMonstersInRoom = _maxMosterWavePerRoom * _maxMonstersPerWave;
+        _perMonsterHealth = _currentRoom.MaxRoomWaveHealth / _maxMonstersPerWave;
+    }
 
-        _perMonsterHealth = _currentRoom.MaxRoomHealth / totalMonstersInRoom;
-        //Debug.Log($"SetMonsterHealth: totalMonstersInRoom = {totalMonstersInRoom}");
-        //Debug.Log($"SetMonsterHealth: _perMonsterHealth = {_perMonsterHealth}");
+    /// <summary>
+    /// Set boss health amount in room
+    /// </summary>
+    private static void SetBossHealth()
+    {
+        _maxBossHealth = _currentRoom.MaxRoomWaveHealth;
+    }
+
+    /// <summary>
+    /// Fills boss rooms array with boss room numbers
+    /// </summary>
+    /// <param name="bossRoomInterval">Boss room interval</param>
+    private void FilterBossRooms(int bossRoomInterval)
+    {
+        _bossRooms = new int[_bossesCount];
+
+        int bossRoom = bossRoomInterval;
+        int index = 0;
+
+        for (int i = 0; i < _maxRooms; i++)
+        {
+            if (bossRoom == 1)
+            {
+                _bossRooms[index] = i + 1;
+                bossRoom = bossRoomInterval;
+                index++;
+            }
+            else
+            {
+                bossRoom--;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Check if given room is a boss room
+    /// </summary>
+    /// <param name="roomIndexToCheck"></param>
+    /// <returns></returns>
+    private static bool IsBossRoom(int roomIndexToCheck)
+    {
+        for (int i = 0; i < _bossRooms.Length; i++)
+        {
+            if (_bossRooms[i] == roomIndexToCheck + 1)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     #endregion
 }

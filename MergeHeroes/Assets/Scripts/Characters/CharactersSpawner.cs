@@ -145,6 +145,39 @@ public class CharactersSpawner : MonoBehaviour
         // Отправляем событие о спавне монстра
         OnMonsterSpawn?.Invoke(this, monsterClone.GetComponent<Monster>());
     }
+
+    /// <summary>
+    /// Spawns boss in a monster parent object
+    /// </summary>
+    public void SpawnBoss()
+    {
+        // Get monster to spawn
+        GameObject boss = _gameSettingsSO.Bosses[_monsterIndexToSpawn];
+
+        // Spawn monster
+        GameObject bossClone = Instantiate(boss, _monsterSpawnPos[_monsters.Count], Quaternion.identity, _monstersParent);
+
+        // Check index out of range 
+        if (_monsterIndexToSpawn + 1 < _gameSettingsSO.Bosses.Length)
+        {
+            // Increment monster index for the next spawn
+            _monsterIndexToSpawn++;
+        }
+
+        // Add spawned monster to current monster wave collection
+        _monsters.Add(bossClone.GetComponent<Monster>());
+
+        // Обновляем показатель GoldPerKill в LevelProgress
+        // TO DO Подумать как расчитать GPK для 3 монстров
+        LevelProgress.GoldPerKill = bossClone.GetComponent<Monster>().MonsterGoldPerKill;
+        //Debug.Log($"SpawnMonster - Monster {_monster} spawned!");
+
+        // TO DO Add OnBossDeadCallback
+        bossClone.GetComponent<Monster>().OnMonsterDead += Monster_OnMonsterDead;
+
+        // Send monster spawn callback
+        OnMonsterSpawn?.Invoke(this, bossClone.GetComponent<Monster>());
+    }
     #endregion
 
     #region EVENTS
@@ -177,14 +210,20 @@ public class CharactersSpawner : MonoBehaviour
             // Обновляем счетчик монстров в текущей комнате
             Level.CurrentRoom.CurMonstersInWave = 3;
 
-            // Увеличиваем счетчик волны
+            // Increment room wave counter
             Level.CurrentRoom.CurWaveNumber++;
 
-            // Спавним новую волну монстров
-            SpawnMonsters();
+            // Reset room wave health
+            Level.CurrentRoom.CurRoomWaveHealth = Level.CurrentRoom.MaxRoomWaveHealth;
 
             // Update monster wave number in UI
             Room_UI.UpdateMonsterWaveInfo();
+
+            // Reset room wave health bar in UI
+            Room_UI.SetRoomWaveHealth(Level.CurrentRoom.MaxRoomWaveHealth);
+
+            // Спавним новую волну монстров
+            SpawnMonsters();
         }
         else if (Level.CurrentRoom.CurMonstersInWave == 0 &&
                  Level.CurrentRoom.CurWaveNumber >= Level.MaxMonsterWavePerRoom)

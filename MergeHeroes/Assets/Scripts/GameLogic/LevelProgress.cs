@@ -10,7 +10,7 @@ public class LevelProgress : MonoBehaviour
 
     private IEnumerator _damageCoroutine = null;
 
-    private static float _currentGoldAmount = 1000f;// TO DO
+    private static float _currentGoldAmount = 1000000f;// TO DO
 
     /// <summary>
     /// Player current gold amount
@@ -105,7 +105,7 @@ public class LevelProgress : MonoBehaviour
 
     #region PUBLIC Methods
     /// <summary>
-    /// —брасывает значени€ стоимости предметов и золота игрока до начальных
+    /// Reset items cost to default values
     /// </summary>
     public static void ResetResources()
     {
@@ -131,11 +131,17 @@ public class LevelProgress : MonoBehaviour
 
             if (CharactersSpawner.Monsters != null && CharactersSpawner.Monsters.Count > 0)
             {
-                // Damage chosen monster
-                CharactersSpawner.Monsters[rnd].GetDamage(CharactersSpawner.Hero.Damage);
+                // Hero damage
+                float heroDamage = CharactersSpawner.Hero.Damage;
 
-                // Decrease room health
-                Room_UI.GetRoomHealthDamage(CharactersSpawner.Hero.Damage);
+                // Damage chosen monster
+                CharactersSpawner.Monsters[rnd].GetDamage(heroDamage);
+
+                // Damage room wave health
+                Level.DamageRoomWaveHealth(heroDamage);
+
+                // Update room health in UI
+                Room_UI.UpdateRoomWaveHealthInfo();
             }
 
             if (CharactersSpawner.Hero != null && CharactersSpawner.Monsters.Count > 0)
