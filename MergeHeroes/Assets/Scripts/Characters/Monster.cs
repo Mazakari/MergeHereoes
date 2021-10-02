@@ -23,12 +23,6 @@ public class Monster : MonoBehaviour
     /// </summary>
     public float MonsterDamage { get { return _monsterDamage; } }
 
-    [SerializeField] private float _monsterGoldPerKill = 1f;
-    /// <summary>
-    /// Base monster gold per kill value
-    /// </summary>
-    public float MonsterGoldPerKill { get { return _monsterGoldPerKill; } set { _monsterGoldPerKill = value; } }
-
     /// <summary>
     /// Monster dead event
     /// </summary>
@@ -55,8 +49,6 @@ public class Monster : MonoBehaviour
             // Monster died send callback
             OnMonsterDead?.Invoke(this, this);
         }
-        //Debug.Log($"GetDamage: Monster = {gameObject.name}");
-        //Debug.Log($"GetDamage: _monsterHp = {_monsterHp}");
     }
     #endregion
 
@@ -73,7 +65,6 @@ public class Monster : MonoBehaviour
         else
         {
             _monsterHp = Level.PerMonsterHealth;
-            //Debug.Log($"SetHealth: _monsterHp = {_monsterHp}");
         }
 
     }

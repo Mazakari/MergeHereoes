@@ -6,7 +6,20 @@ public class Room
 {
     #region VARIABLES
     // тип комнаты
+    /// <summary>
+    /// Available room types
+    /// </summary>
+    public enum RoomType
+    {
+        Monsters,
+        Boss
+    }
 
+    private RoomType _curRoomType;
+    /// <summary>
+    /// Current room type
+    /// </summary>
+    public RoomType CurRoomType {get{ return _curRoomType; } set { _curRoomType = value; } }
     // награда за комнату
 
     private string _roomName = "";
@@ -46,6 +59,18 @@ public class Room
     /// Monsters amount in current wave
     /// </summary>
     public int CurMonstersInWave { get { return _curMonstersInWave; } set { _curMonstersInWave = value; } }
+
+    private float _roomGoldPerKill = 10f;
+    /// <summary>
+    /// Base monster gold per kill value
+    /// </summary>
+    public float RoomGoldPerKill { get { return _roomGoldPerKill; } set { _roomGoldPerKill = value; } }
+
+    private float _bossRoomGoldPerKill = 100f;
+    /// <summary>
+    /// Gold per kill in boss room
+    /// </summary>
+    public float BossRoomGoldPerKill { get { return _bossRoomGoldPerKill; } set { _bossRoomGoldPerKill = value; } }
 
     private Sprite _roomBackgroundSprite = null;// Room background sprite
 

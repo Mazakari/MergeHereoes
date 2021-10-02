@@ -50,7 +50,9 @@ MonoBehaviour:
   - {fileID: 8196150245991738023, guid: e18252702370d27418457b6d6b7dc5da, type: 3}
   - {fileID: 5169899780972456355, guid: bb56321876db8ba4e884a365b5d99071, type: 3}
   _bosses:
-  - {fileID: 2023559804335354048, guid: 85e5acb55b09da44b9d365bd7b62a4dd, type: 3}
+  - {fileID: 5201893450759268361, guid: 47c0d61e3b8e40342b4d9918b496a9d4, type: 3}
+  - {fileID: 5684394138745955084, guid: 557d90deda9e07d479b48cccf9c67cf3, type: 3}
+  - {fileID: 7551572637358804485, guid: f3eccc5e20491dd48a1148473bdf6370, type: 3}
   _roomSprites:
   - {fileID: 21300000, guid: 6d7329da3c4513e429b7f58d7cf5c348, type: 3}
   - {fileID: 21300000, guid: 36c4b507fb69e8c4ca0e455503c14d95, type: 3}

@@ -37,17 +37,16 @@ public class Room_UI : MonoBehaviour
         _roomCounterText.text = $"Room {Level.CurrentRoom.CurRoomNumber} of {Level.MaxRooms}";
 
         // Check if boss room loaded right now
-        if (Level.BossRoomActive)
+        if (Level.CurrentRoom.CurRoomType == Room.RoomType.Boss)
         {
             // Shows one of one waved for the boss room
-            _roomWaveCounterText.text = $"Wave {Level.MaxBossWavePerRoom} of {Level.MaxBossWavePerRoom}";
-            Debug.Log($"UpdateRoomInfo: Wave {Level.CurrentRoom.CurWaveNumber} of {Level.MaxMonsterWavePerRoom}");
+            //_roomWaveCounterText.text = $"Wave {Level.MaxBossWavePerRoom} of {Level.MaxBossWavePerRoom}";
+            _roomWaveCounterText.text = $"BOSS";
         }
         else
         {
             _roomWaveCounterText.text = $"Wave {Level.CurrentRoom.CurWaveNumber} of {Level.MaxMonsterWavePerRoom}";
         }
-        
     }
 
     /// <summary>
@@ -55,16 +54,14 @@ public class Room_UI : MonoBehaviour
     /// </summary>
     public static void UpdateMonsterWaveInfo()
     {
-        if (Level.BossRoomActive)
+        if (Level.CurrentRoom.CurRoomType == Room.RoomType.Boss)
         {
             _roomWaveCounterText.text = $"Wave {Level.MaxBossWavePerRoom} of {Level.MaxBossWavePerRoom}";
-            Debug.Log($"UpdateMonsterWaveInfo: Wave {Level.CurrentRoom.CurWaveNumber} of {Level.MaxMonsterWavePerRoom}");
         }
         else
         {
             _roomWaveCounterText.text = $"Wave {Level.CurrentRoom.CurWaveNumber} of {Level.MaxMonsterWavePerRoom}";
         }
-       
     }
 
     /// <summary>

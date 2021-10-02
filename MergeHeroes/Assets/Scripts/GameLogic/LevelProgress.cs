@@ -17,12 +17,6 @@ public class LevelProgress : MonoBehaviour
     /// </summary>
     public static float CurrentGoldAmount { get { return _currentGoldAmount; } set { _currentGoldAmount = value; } }
 
-    private static float _goldPerKill = 1;
-    /// <summary>
-    /// Current gold per kill
-    /// </summary>
-    public static float GoldPerKill { get { return _goldPerKill; } set { _goldPerKill = value; } }
-
     #region Sword
     // Текущий тир меча для спавна
     private static int _currentSwordTierToBuy = 1;

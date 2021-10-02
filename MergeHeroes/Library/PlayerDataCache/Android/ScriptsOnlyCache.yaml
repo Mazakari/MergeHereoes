@@ -557,7 +557,7 @@ ScriptsOnlyBuild:
     className: Item
   - hash:
       serializedVersion: 2
-      Hash: 6d4ef9594dda0ed2cc2cfb783273657a
+      Hash: 90cbef4afde36b048dccaa1941233daa
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameSettingsSO
@@ -785,7 +785,7 @@ ScriptsOnlyBuild:
     className: BufferManager
   - hash:
       serializedVersion: 2
-      Hash: 3cc9e53af733623b565b9294ec207431
+      Hash: 5965248d6e228e20e96517c6092da52f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Monster
@@ -829,4 +829,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
   - Assets/Scenes/Level.unity
-  playerPath: D:/NOCSCAB/Hyper Casual/MergeHereoes/MergeHeroes/Builds/MergeHeroes_0.4.92621(p).apk
+  playerPath: D:/NOCSCAB/Hyper Casual/MergeHereoes/MergeHeroes/Builds/MergeHeroes_0.5.100121(p).apk

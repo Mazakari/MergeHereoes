@@ -134,12 +134,8 @@ public class CharactersSpawner : MonoBehaviour
         // Add spawned monster to current monster wave collection
         _monsters.Add(monsterClone.GetComponent<Monster>());
 
-        // Обновляем показатель GoldPerKill в LevelProgress
-        // TO DO Подумать как расчитать GPK для 3 монстров
-        LevelProgress.GoldPerKill = monsterClone.GetComponent<Monster>().MonsterGoldPerKill;
-        //Debug.Log($"SpawnMonster - Monster {_monster} spawned!");
-
-        // Подписываемся на событие смерти монстра
+       
+        // Callback
         monsterClone.GetComponent<Monster>().OnMonsterDead += Monster_OnMonsterDead;
 
         // Отправляем событие о спавне монстра
@@ -151,11 +147,14 @@ public class CharactersSpawner : MonoBehaviour
     /// </summary>
     public void SpawnBoss()
     {
+        // Get random boss index
+        int rnd = UnityEngine.Random.Range(0, _gameSettingsSO.Bosses.Length - 1);
+
         // Get monster to spawn
-        GameObject boss = _gameSettingsSO.Bosses[_monsterIndexToSpawn];
+        GameObject boss = _gameSettingsSO.Bosses[rnd];
 
         // Spawn monster
-        GameObject bossClone = Instantiate(boss, _monsterSpawnPos[_monsters.Count], Quaternion.identity, _monstersParent);
+        GameObject bossClone = Instantiate(boss, _monsterSpawnPos[1], Quaternion.identity, _monstersParent);
 
         // Check index out of range 
         if (_monsterIndexToSpawn + 1 < _gameSettingsSO.Bosses.Length)
@@ -166,11 +165,6 @@ public class CharactersSpawner : MonoBehaviour
 
         // Add spawned monster to current monster wave collection
         _monsters.Add(bossClone.GetComponent<Monster>());
-
-        // Обновляем показатель GoldPerKill в LevelProgress
-        // TO DO Подумать как расчитать GPK для 3 монстров
-        LevelProgress.GoldPerKill = bossClone.GetComponent<Monster>().MonsterGoldPerKill;
-        //Debug.Log($"SpawnMonster - Monster {_monster} spawned!");
 
         // TO DO Add OnBossDeadCallback
         bossClone.GetComponent<Monster>().OnMonsterDead += Monster_OnMonsterDead;
@@ -188,10 +182,18 @@ public class CharactersSpawner : MonoBehaviour
     /// <param name="e">Additional callback agruments</param>
     private void Monster_OnMonsterDead(object sender, Monster e)
     {
-        // Начисляем игроку золото
-        LevelProgress.CurrentGoldAmount += e.MonsterGoldPerKill;
+        // Add room gold to player depending the room type
+        if (Level.CurrentRoom.CurRoomType == Room.RoomType.Boss)
+        {
+            LevelProgress.CurrentGoldAmount += Level.CurrentRoom.BossRoomGoldPerKill;
+        }
+        else
+        {
+            LevelProgress.CurrentGoldAmount += Level.CurrentRoom.RoomGoldPerKill;
+        }
+        
 
-        // Обновляем счетчик золота игрока
+        // Update player gold counter
         PlayerGoldCounterUI.UpdateGoldCounter();
 
         // Удаляем монстра из текущей волны
