@@ -11,11 +11,6 @@ public class Monster : MonoBehaviour
 
     private float _monsterHp = 2f;// Base monster HP
 
-    /// <summary>
-    /// DEBUG Cur monster health
-    /// </summary>
-    public float MonsterHP { get { return _monsterHp; } }
-
     [SerializeField] private float _monsterDamage = 5f;
 
     /// <summary>

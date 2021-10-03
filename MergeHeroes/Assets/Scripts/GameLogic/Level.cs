@@ -63,11 +63,12 @@ public class Level : MonoBehaviour
     /// </summary>
     public static float MaxBossHealth { get { return _maxBossHealth; } }
 
-    //private static bool _bossRoomActive = false;
+    private static float _goldReward = 0; 
+
     /// <summary>
-    /// Is boss room active right now
+    /// Current gold reward for room completion
     /// </summary>
-    //public static bool BossRoomActive { get { return _bossRoomActive; } }
+    public static float GoldReward { get { return _goldReward; } }
     #endregion
 
     private static CharactersSpawner _characterSpawner = null;
@@ -101,15 +102,9 @@ public class Level : MonoBehaviour
         int freeRoomIndex = FindEmptyRoomIndex();
         if (freeRoomIndex >= 0 && freeRoomIndex < _maxRooms)
         {
-            //_rooms[freeRoomIndex] = new Room(ItemsSpawner.gameSettingsSO.RoomNames[rnd], _currentRoom.CurRoomNumber + 1, _currentRoom.MaxRoomWaveHealth * (_currentRoom.CurRoomNumber + 1), 3, ItemsSpawner.gameSettingsSO.RoomSprites[rndSprite], roomModificator);
-
             // Check if next room is a boss room
             if (IsBossRoom(freeRoomIndex))
             {
-                // Activate boss room flag TEST
-                //_bossRoomActive = true;
-
-
                 //Choose random room name
                 int rnd = UnityEngine.Random.Range(0, ItemsSpawner.gameSettingsSO.RoomNames.Length - 1);
 
@@ -122,6 +117,9 @@ public class Level : MonoBehaviour
 
                 // Set room wave to maximum
                 _currentRoom.CurWaveNumber = _maxMosterWavePerRoom;
+
+                // Set room reward
+                _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
 
                 // Set room type
                 _currentRoom.CurRoomType = Room.RoomType.Boss;
@@ -155,6 +153,9 @@ public class Level : MonoBehaviour
 
                 // Cache room reference
                 _currentRoom = _rooms[freeRoomIndex];
+
+                // Set room reward
+                _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
 
                 // Set room type
                 _currentRoom.CurRoomType = Room.RoomType.Monsters;
@@ -208,6 +209,9 @@ public class Level : MonoBehaviour
 
         // Cache room reference
         _currentRoom = _rooms[0];
+
+        // Set room reward
+        _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
 
         // Set room type
         _currentRoom.CurRoomType = Room.RoomType.Monsters;

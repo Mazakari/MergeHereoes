@@ -5,7 +5,6 @@ using UnityEngine;
 public class Room
 {
     #region VARIABLES
-    // тип комнаты
     /// <summary>
     /// Available room types
     /// </summary>
@@ -20,7 +19,13 @@ public class Room
     /// Current room type
     /// </summary>
     public RoomType CurRoomType {get{ return _curRoomType; } set { _curRoomType = value; } }
+
     // награда за комнату
+    private float _roomGoldReward = 100f;
+    /// <summary>
+    /// Gold reward for room completion
+    /// </summary>
+    public float RoomGoldReward { get { return _roomGoldReward; } set { _roomGoldReward = value; } }
 
     private string _roomName = "";
     /// <summary>

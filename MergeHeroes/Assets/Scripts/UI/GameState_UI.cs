@@ -7,13 +7,16 @@ using UnityEngine.UI;
 public class GameState_UI : MonoBehaviour
 {
     #region VARIABLES
-    // ѕопапы
+    // Popups
     private GameObject _gameSettingsPopup = null;// —сылка на попап с настройками на уровне
     private GameObject _levelLostPopup = null;// —сылка на попап с попапом проигрыша на уровне
     private GameObject _levelWonPopup = null;// —сылка на попап с попапом победы на уровне
     private GameObject _roomClearedPopup = null;// —сылка на попап с попапом победы на уровне
 
-    //  нопки
+    // Text
+    private Text _roomGorldRewardCounter = null;
+
+    // Buttons
     private Button _gameSettingsButton = null;// —сылка на кнопку с настройками на уровне
     private Button _backButton = null;//  нопка возврата на уровень
     private Button _restartLevelButton = null;//  нопка рестарта уровн€
@@ -35,6 +38,9 @@ public class GameState_UI : MonoBehaviour
         _levelWonPopup = transform.Find("LevelWonPopup").gameObject;
 
         _roomClearedPopup = transform.Find("RoomClearedPopup").gameObject;
+
+        // Set text references
+        _roomGorldRewardCounter = transform.Find("RoomClearedPopup").Find("RoomReward").Find("RoomGorldRewardCounter").GetComponent<Text>();
 
         // Ќаходим ссылки на кнопки
         //  нопка с настройками игры
@@ -310,6 +316,14 @@ public class GameState_UI : MonoBehaviour
         Room_UI.UpdateRoomInfo();
         SwitchRoomClearedPopup(false);
     }
+
+    /// <summary>
+    /// Updates room gold reward counter
+    /// </summary>
+    private void UpdateRoomRewardCounter()
+    {
+        _roomGorldRewardCounter.text = $"{Level.GoldReward}";
+    }
     #endregion
 
     #region EVENTS
@@ -338,6 +352,16 @@ public class GameState_UI : MonoBehaviour
         else
         {
             UpdateRoomButtons();
+
+            // Add player room gold reward
+            LevelProgress.CurrentGoldAmount += Level.GoldReward;
+
+            // Update player gold counter
+            PlayerGoldCounterUI.UpdateGoldCounter();
+
+            // Update room gold reward counter
+            UpdateRoomRewardCounter();
+
             SwitchRoomClearedPopup(true);
         }
     }
