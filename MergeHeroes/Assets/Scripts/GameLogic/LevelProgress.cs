@@ -1,5 +1,6 @@
 // Roman Baranov 28.07.2021
 
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -79,7 +80,6 @@ public class LevelProgress : MonoBehaviour
     /// </summary>
     public static float PotionCostMultiplier { get { return _potionCostMultiplier; } }
     #endregion
-
     #endregion
 
     #region UNITY Methods
@@ -120,26 +120,35 @@ public class LevelProgress : MonoBehaviour
     {
         while (true)
         {
-            // Choose random monster from the wave
-            int rnd = Random.Range(0, CharactersSpawner.Monsters.Count - 1);
-
             if (CharactersSpawner.Monsters != null && CharactersSpawner.Monsters.Count > 0)
             {
+                // Choose random monster from the wave
+                int rnd = UnityEngine.Random.Range(0, CharactersSpawner.Monsters.Count - 1);
+
                 // Hero damage
                 float heroDamage = CharactersSpawner.Hero.Damage;
 
-                // Damage chosen monster
-                CharactersSpawner.Monsters[rnd].GetDamage(heroDamage);
+                if (Level.CurrentRoom.CurRoomWaveHealth <= Level.MonsterDeadPoint)
+                {
+                    CharactersSpawner.Monsters[rnd].RemoveMonster();
+                    continue;
+                }
+                else
+                {
+                    // Damage room wave health
+                    Level.DamageRoomWaveHealth(heroDamage);
 
-                // Damage room wave health
-                Level.DamageRoomWaveHealth(heroDamage);
-
-                // Update room health in UI
-                Room_UI.UpdateRoomWaveHealthInfo();
+                    // Update room health in UI
+                    Room_UI.UpdateRoomWaveHealthInfo();
+                }
+                
             }
 
             if (CharactersSpawner.Hero != null && CharactersSpawner.Monsters.Count > 0)
             {
+                // Choose random monster from the wave
+                int rnd = UnityEngine.Random.Range(0, CharactersSpawner.Monsters.Count - 1);
+
                 // Наносим урон герою этим монстром
                 CharactersSpawner.Hero.GetDamage(CharactersSpawner.Monsters[rnd].MonsterDamage);
             }

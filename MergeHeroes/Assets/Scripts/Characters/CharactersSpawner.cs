@@ -192,7 +192,6 @@ public class CharactersSpawner : MonoBehaviour
             LevelProgress.CurrentGoldAmount += Level.CurrentRoom.RoomGoldPerKill;
         }
         
-
         // Update player gold counter
         PlayerGoldCounterUI.UpdateGoldCounter();
 
@@ -204,6 +203,9 @@ public class CharactersSpawner : MonoBehaviour
 
         // ”ничтожаем монстра
         Destroy(e.gameObject);
+
+        // Calcualte new remove monster point
+        Level.SetMonsterDeadPoint(Level.CurrentRoom.CurRoomWaveHealth);
 
         // ѕровер€ем остались ли монстры в текущей волне, если нет, то спавним новую волну
         if (Level.CurrentRoom.CurMonstersInWave == 0 &&
@@ -226,6 +228,9 @@ public class CharactersSpawner : MonoBehaviour
 
             // —павним новую волну монстров
             SpawnMonsters();
+
+            // Calcualte new remove monster point
+            Level.SetMonsterDeadPoint(Level.CurrentRoom.CurRoomWaveHealth);
         }
         else if (Level.CurrentRoom.CurMonstersInWave == 0 &&
                  Level.CurrentRoom.CurWaveNumber >= Level.MaxMonsterWavePerRoom)

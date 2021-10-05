@@ -27,6 +27,12 @@ public class Level : MonoBehaviour
     public static Room CurrentRoom { get { return _currentRoom; } }
 
     private static int[] _bossRooms = null;
+
+    private static float _monsterDeadPoint = 0f;
+    /// <summary>
+    /// Room wave health amount when monster should be removed
+    /// </summary>
+    public static float MonsterDeadPoint { get { return _monsterDeadPoint; } set { _monsterDeadPoint = value; } }
     #endregion
 
     #region MONSTERS
@@ -121,6 +127,9 @@ public class Level : MonoBehaviour
                 // Set room reward
                 _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
 
+                // Set monster remove health point
+                SetMonsterDeadPoint(_currentRoom.CurRoomWaveHealth);
+
                 // Set room type
                 _currentRoom.CurRoomType = Room.RoomType.Boss;
 
@@ -156,6 +165,9 @@ public class Level : MonoBehaviour
 
                 // Set room reward
                 _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
+
+                // Set monster remove health point
+                SetMonsterDeadPoint(_currentRoom.CurRoomWaveHealth);
 
                 // Set room type
                 _currentRoom.CurRoomType = Room.RoomType.Monsters;
@@ -194,6 +206,26 @@ public class Level : MonoBehaviour
             Debug.Log($"DamageRoomWaveHealth: _currentRoom.CurRoomWaveHealth = {_currentRoom.CurRoomWaveHealth}");
         }
     }
+
+    /// <summary>
+    /// Set next room wave health point where monster should be removed
+    /// </summary>
+    /// <param name="roomHealth">Room health amount</param>
+    public static void SetMonsterDeadPoint(float roomHealth)
+    {
+        float healthStep = roomHealth / _currentRoom.CurMonstersInWave;
+
+        if (_currentRoom.CurRoomType == Room.RoomType.Boss || roomHealth - healthStep <= 0)
+        {
+            _monsterDeadPoint = 0;
+        }
+        else
+        {
+            _monsterDeadPoint = roomHealth - healthStep;
+        }
+
+        Debug.Log($"_monsterDeadPoint = {_monsterDeadPoint}");
+    }
     #endregion
 
     #region PRIVATE Methods
@@ -212,6 +244,9 @@ public class Level : MonoBehaviour
 
         // Set room reward
         _goldReward = _currentRoom.RoomGoldReward * _currentRoom.CurRoomNumber;
+
+        // Set monster remove health point
+        SetMonsterDeadPoint(_currentRoom.CurRoomWaveHealth);
 
         // Set room type
         _currentRoom.CurRoomType = Room.RoomType.Monsters;
@@ -348,5 +383,6 @@ public class Level : MonoBehaviour
 
         return false;
     }
+    
     #endregion
 }
