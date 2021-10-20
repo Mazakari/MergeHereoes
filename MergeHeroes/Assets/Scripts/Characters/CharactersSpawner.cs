@@ -195,7 +195,7 @@ public class CharactersSpawner : MonoBehaviour
         // Update player gold counter
         PlayerGoldCounterUI.UpdateGoldCounter();
 
-        // Удаляем монстра из текущей волны
+        // Remove monster from the monsters list
         _monsters.Remove(e);
 
         // Уменьшаем счетчик монстров в текущей комнате

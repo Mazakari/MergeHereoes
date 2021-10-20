@@ -9,8 +9,6 @@ public class Monster : MonoBehaviour
 
     [SerializeField] private bool _isBoss = false;// Is this monstera boss
 
-    //private float _monsterHp = 2f;// Base monster HP
-
     [SerializeField] private float _monsterDamage = 5f;
 
     /// <summary>
@@ -24,10 +22,6 @@ public class Monster : MonoBehaviour
     public event EventHandler<Monster> OnMonsterDead;
     #endregion
 
-    #region UNITY Methods
-    //void Start() => SetHealth();
-    #endregion
-
     #region PUBLIC Methods
     /// <summary>
     /// Send OnMonsterDead callback 
@@ -36,24 +30,6 @@ public class Monster : MonoBehaviour
     {
        OnMonsterDead?.Invoke(this, this);
     }
-    #endregion
-
-    #region PRIVATE Methods
-    /// <summary>
-    /// Set monster health
-    /// </summary>
-    //private void SetHealth()
-    //{
-    //    if (_isBoss)
-    //    {
-    //        _monsterHp = Level.MaxBossHealth;
-    //    }
-    //    else
-    //    {
-    //        _monsterHp = Level.PerMonsterHealth;
-    //    }
-
-    //}
     #endregion
 }
 

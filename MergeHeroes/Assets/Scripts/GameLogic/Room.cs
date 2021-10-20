@@ -33,7 +33,7 @@ public class Room
     /// </summary>
     public string RoomName { get { return _roomName; } }
 
-    private RoomModificator.Modificator _RoomModificator;// Room modifier
+    private RoomModificator.Modificator _roomModificator;// Room modifier
 
     private int _curRoomNumber = 0;
     /// <summary>
@@ -106,7 +106,7 @@ public class Room
 
         _roomBackgroundSprite = roomBackgroundSprite;
 
-        _RoomModificator = roomModificator;
+        _roomModificator = roomModificator;
     }
     #endregion
 }
